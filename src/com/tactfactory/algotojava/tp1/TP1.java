@@ -66,7 +66,7 @@ public class TP1 {
 				switch (userInput) {
 				case "+":
 					// Si le déplacement doit aller vers la gauche alors + est faux.
-					if (!toRight) {
+					if (!toRight == true) {
 						// On retourne a rechercher le premier élément
 						loop = 0;
 						// Le nombre de l'utilisateur repart à 0
@@ -78,7 +78,7 @@ public class TP1 {
 
 				case "-":
 					// Si le déplacement doit aller vers la droite alors - est faux
-					if (toRight) {
+					if (toRight == true) {
 						// On retourne a rechercher le premier élément
 						loop = 0;
 						// Le nombre de l'utilisateur repart à 0
