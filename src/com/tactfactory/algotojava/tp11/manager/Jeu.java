@@ -49,7 +49,6 @@ public class Jeu {
 					}
 				}
 			}
-			
 			afficherTour();
 		}
 		
@@ -65,6 +64,14 @@ public class Jeu {
 	private void attaquer(Joueur joueur, Joueur adversaire) {
 		int x = rand.nextInt(TAILLE_X);
 		int y = rand.nextInt(TAILLE_Y);
+		while (!simpleFireTry(joueur, adversaire, x, y)) {
+			x = rand.nextInt(TAILLE_X);
+			y = rand.nextInt(TAILLE_Y);
+		}
+	}
+
+	private boolean simpleFireTry(Joueur joueur, Joueur adversaire, int x, int y) {
+		boolean result = false;
 		Case testCase = new Case(x, y);
 		boolean dejaTire = false;
 		for (Case caseE : joueur.getTires()) {
@@ -82,11 +89,11 @@ public class Jeu {
 				}
 			}
 			joueur.getTires().add(testCase);
-		}else{
-			attaquer(joueur, adversaire);
+			result= true;
 		}
+		return result;
 	}
-
+	
 	private Joueur trouveAdversaire(Joueur joueur) {
 		Joueur adversaire = null;
 		boolean flag = true;
@@ -103,7 +110,7 @@ public class Jeu {
 				adversaire = joueurs.get(i);
 				flag = false;
 			}
-		} while (flag && i != joueurs.indexOf(joueur));
+		} while (flag && adversaire != null && !adversaire.equals(joueur));
 		return adversaire;
 	}
 
