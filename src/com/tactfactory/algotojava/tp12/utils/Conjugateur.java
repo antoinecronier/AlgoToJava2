@@ -1,4 +1,4 @@
-package com.tactfactory.algotojava.tp12.manager;
+package com.tactfactory.algotojava.tp12.utils;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;

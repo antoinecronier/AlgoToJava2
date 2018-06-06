@@ -1,6 +1,6 @@
 package com.tactfactory.algotojava.tp12;
 
-import com.tactfactory.algotojava.tp12.manager.Conjugateur;
+import com.tactfactory.algotojava.tp12.utils.Conjugateur;
 
 public class TP12 {
 
