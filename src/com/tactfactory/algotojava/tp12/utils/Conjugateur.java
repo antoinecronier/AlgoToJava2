@@ -4,10 +4,10 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Conjugateur {
-	private static final String[] pronom = {"je","tu","il","nous","vous","ils"};
-	private static final String[] terminaison = {"e","es","e","ons","ez","ent"};
-	private static final String[] voyelle = {"a","e","i","o","u"};
-	private static final String[] variationNous = {"g"};
+	private static final String[] PRONOM = {"je","tu","il","nous","vous","ils"};
+	private static final String[] TERMINAISON = {"e","es","e","ons","ez","ent"};
+	private static final String[] VOYELLE = {"a","e","i","o","u"};
+	private static final String[] VARIATION_NOUS = {"g"};
 	
 	private static final Scanner sc = new Scanner(System.in);
 	
@@ -19,32 +19,32 @@ public class Conjugateur {
 			boolean variante = false;
 			switch (i) {
 			case 0:
-				for (int j = 0; j < voyelle.length; j++) {
-					if (radical.startsWith(voyelle[j])) {
+				for (int j = 0; j < VOYELLE.length; j++) {
+					if (radical.startsWith(VOYELLE[j])) {
 						variante = true;
 					}
 				}
 				if (variante) {
-					builder.append(pronom[i].substring(0, 1) + "'" + " " + radical + terminaison[i] + "\n");
+					builder.append(PRONOM[i].substring(0, 1) + "'" + " " + radical + TERMINAISON[i] + "\n");
 				}else{
-					builder.append(pronom[i] + " " + radical + terminaison[i] + "\n");
+					builder.append(PRONOM[i] + " " + radical + TERMINAISON[i] + "\n");
 				}
 				break;
 				
 			case 3:
-				for (int j = 0; j < variationNous.length; j++) {
-					if (radical.endsWith(variationNous[j])) {
+				for (int j = 0; j < VARIATION_NOUS.length; j++) {
+					if (radical.endsWith(VARIATION_NOUS[j])) {
 						variante = true;
 					}
 				}
 				if (variante) {
-					builder.append(pronom[i] + " " + radical + "e" + terminaison[i] + "\n");
+					builder.append(PRONOM[i] + " " + radical + "e" + TERMINAISON[i] + "\n");
 				}else{
-					builder.append(pronom[i] + " " + radical + terminaison[i] + "\n");
+					builder.append(PRONOM[i] + " " + radical + TERMINAISON[i] + "\n");
 				}
 				break;
 			default:
-				builder.append(pronom[i] + " " + radical + terminaison[i] + "\n");
+				builder.append(PRONOM[i] + " " + radical + TERMINAISON[i] + "\n");
 				break;
 			}
 		}
