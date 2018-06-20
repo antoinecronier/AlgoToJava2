@@ -55,7 +55,8 @@ public class TreeManager {
 		String result = null;
 		for (TermTree termTree : tree.getTermTree()) {
 			for (String word : termTree.getWords()) {
-				System.out.println(word.replaceAll("(\\s)|([)|(])|(,)", ""));
+				
+				System.out.println(word);
 				if (password.equals(word)) {
 					result = word;
 				}

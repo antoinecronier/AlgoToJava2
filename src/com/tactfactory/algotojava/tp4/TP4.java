@@ -30,7 +30,7 @@ public class TP4 {
 		nb2 = sc.nextInt();
 
 		if (nb1 == nb2) {
-			System.out.println("Somme nb1 et nb2 = " + nb1 + nb2);
+			System.out.println("Somme nb1 et nb2 = " + (nb1 + nb2));
 		}
 
 		if (nb1 < 0 && nb2 >= 0) {

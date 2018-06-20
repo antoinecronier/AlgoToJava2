@@ -53,12 +53,41 @@ public class TermTree {
 		
 		return builder.toString();
 	}
+	
+	@Override
+	public String toString() {
+		return terme;
+	}
 
 	public List<String> getWords() {
 		List<String> words = new ArrayList<String>();
+		
+		StringBuilder builder = new StringBuilder();
+		
+		int step = 0;
 		for (TermTree termTree : termes) {
-			words.add(getTerme()+termTree.getWords());
+			builder.append(terme);
+			builder.append(termTree.toString());
+			builder.append(termTree.getWord(step));
+			words.add(builder.toString());
+			step++;
+			builder = new StringBuilder();
 		}
+		
 		return words;
+	}
+	
+	public String getWord(int step){
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append(terme);
+		
+		for (TermTree termTree : termes) {
+			for (String subtermTree : termTree.getWords()) {
+				builder.append(subtermTree);
+			}
+		}
+		
+		return builder.toString();
 	}
 }

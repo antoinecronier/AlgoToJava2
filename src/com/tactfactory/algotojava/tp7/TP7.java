@@ -22,9 +22,10 @@ import java.util.Scanner;
 public class TP7 {
 
 	public static void main(String[] args) {
-		String generalOk = "Café servie dans le bac %d pour %d unité et passé dans le concasseur %d";
-		String bac = "Il reste %d unité dans le bac %d";
-		String concasseur = "Le concasseur %d a été utilisé %d fois";
+		String GENERAL_OK = "Café servie dans le bac %d pour %d unité %s";
+		String CONCASSE = "et passé dans le concasseur %d";
+		String BAC = "Il reste %d unité dans le bac %d";
+		String CONCASSEUR = "Le concasseur %d a été utilisé %d fois";
 		
 		int[][] indiceLinks = {
 				{10,1,1},
@@ -39,7 +40,7 @@ public class TP7 {
 		
 		int[][] items = {
 				{100,100,100,100},
-				{0,0}
+				{0  ,0          }
 		};
 		
 		Scanner sc = new Scanner(System.in);
@@ -50,13 +51,17 @@ public class TP7 {
 			do {
 				System.out.println("Selectionner un produit 1 -> 8");
 				selection = sc.nextInt();
-			} while (selection < 1 && selection > 8);
-			
+			} while (selection < 1 || selection > 8);
+
 			// Bac
-			if (items[0][indiceLinks[selection - 1][1]-1] - indiceLinks[selection - 1][0] > 0) {
+			if (items[0][indiceLinks[selection - 1][1]-1] - indiceLinks[selection - 1][0] >= 0) {
 				items[0][indiceLinks[selection - 1][1]-1] -= indiceLinks[selection - 1][0];
-				items[1][indiceLinks[selection - 1][2]-1] ++;
-				System.out.println(String.format(generalOk, indiceLinks[selection - 1][1],indiceLinks[selection - 1][0],indiceLinks[selection - 1][2]));
+				if (indiceLinks[selection - 1][2] != 0) {
+					items[1][indiceLinks[selection - 1][2]-1] ++;
+					System.out.println(String.format(GENERAL_OK, indiceLinks[selection - 1][1],indiceLinks[selection - 1][0],String.format(CONCASSE, indiceLinks[selection - 1][2])));
+				}else{
+					System.out.println(String.format(GENERAL_OK, indiceLinks[selection - 1][1],indiceLinks[selection - 1][0],""));
+				}
 			}else {
 				System.out.println("Plus assez de grain dans le bac " + indiceLinks[selection - 1][1]);
 			}
