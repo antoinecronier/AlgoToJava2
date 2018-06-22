@@ -53,17 +53,15 @@ public class TreeManager {
 	
 	public String contains(String password){
 		String result = null;
-		for (TermTree termTree : tree.getTermTree()) {
-			for (String word : termTree.getWords()) {
-				
-				System.out.println(word);
-				if (password.equals(word)) {
-					result = word;
-				}
-			}
+		if (tree.contains(password)) {
+			result = "ouiiii";
 		}
 		
 		return result;
+	}
+	
+	public int[] containsPosition(String password){
+		return tree.containsPosition(password, baseInheritance);
 	}
 
 	public String printTree() {
