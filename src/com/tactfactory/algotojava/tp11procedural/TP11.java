@@ -14,10 +14,28 @@ import com.tactfactory.algotojava.tp11.model.Joueur;
 public class TP11 {
 
 	/**
+	 * Gestion des couleurs
+	 */
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_BLACK = "\u001B[30m";
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_BLUE = "\u001B[34m";
+	public static final String ANSI_PURPLE = "\u001B[35m";
+	public static final String ANSI_CYAN = "\u001B[36m";
+	public static final String ANSI_WHITE = "\u001B[37m";
+
+	/**
 	 * Représente les informations des bateaux. identifiant | taille | nombre
 	 * par joueur.
 	 */
-	private final static int[][] NAVIRES = new int[][] { { 1, 1, 1 }, { 2, 3, 2 }, { 3, 4, 2 }, { 4, 6, 1 } };
+	private final static int[][] NAVIRES = new int[][] { 
+		{ 1, 1, 1 }, 
+		{ 2, 3, 2 }, 
+		{ 3, 4, 2 }, 
+		{ 4, 6, 1 } 
+		};
 
 	private final static int IDENTIFIANT = 0;
 	private final static int TAILLE = 1;
@@ -29,7 +47,7 @@ public class TP11 {
 	 * Cartes utilisé par l'ensemble des joueurs.
 	 */
 	private static int[][][] maps;
-	
+
 	/**
 	 * Création d'un objet pour faire de l'aléatoire.
 	 */
@@ -65,7 +83,7 @@ public class TP11 {
 				// Si une cible est trouvé.
 				if (cible != -1) {
 					tire(cible);
-					
+
 					afficheCartePlacement(i);
 					System.out.println();
 				} else {
@@ -115,7 +133,7 @@ public class TP11 {
 			afficheCartePlacement(i);
 			System.out.println();
 		}
-		
+
 		System.out.println("Début du combat");
 	}
 
@@ -193,7 +211,28 @@ public class TP11 {
 	public static void afficheCartePlacement(int joueur) {
 		for (int i = 0; i < maps[joueur].length; i++) {
 			for (int j = 0; j < maps[joueur][i].length; j++) {
-				System.out.print(maps[joueur][i][j] + " ");
+				StringBuilder result = new StringBuilder();
+				switch (maps[joueur][i][j]) {
+				case 8:
+					result.append(ANSI_YELLOW);
+					break;
+				case 9:
+					result.append(ANSI_RED);
+					break;
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					result.append(ANSI_PURPLE);
+					break;
+				default:
+					result.append(ANSI_BLUE);
+					break;
+				}
+				result.append(maps[joueur][i][j]);
+				result.append(" ");
+				result.append(ANSI_RESET);
+				System.out.print(result.toString());
 			}
 			System.out.println();
 		}
@@ -225,7 +264,7 @@ public class TP11 {
 		if (i == attaquant) {
 			adversaire = -1;
 		}
-		
+
 		return adversaire;
 	}
 
@@ -233,19 +272,17 @@ public class TP11 {
 		// Tirage aléatoire de x et y;
 		int x = -1;
 		int y = -1;
-		
-		do{
+
+		do {
 			x = rand.nextInt(MAP_X) % MAP_X;
 			y = rand.nextInt(MAP_Y) % MAP_Y;
-			
+
 			if (maps[joueurCible][x][y] == 0) {
 				maps[joueurCible][x][y] = 8;
-			}else if(maps[joueurCible][x][y] == 1 ||
-					maps[joueurCible][x][y] == 2 ||
-					maps[joueurCible][x][y] == 3 ||
-					maps[joueurCible][x][y] == 4){
+			} else if (maps[joueurCible][x][y] == 1 || maps[joueurCible][x][y] == 2 || maps[joueurCible][x][y] == 3
+					|| maps[joueurCible][x][y] == 4) {
 				maps[joueurCible][x][y] = 9;
 			}
-		}while(maps[joueurCible][x][y] != 8 && maps[joueurCible][x][y] != 9);
+		} while (maps[joueurCible][x][y] != 8 && maps[joueurCible][x][y] != 9);
 	}
 }

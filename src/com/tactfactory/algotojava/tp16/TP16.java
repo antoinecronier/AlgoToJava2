@@ -26,7 +26,7 @@ public class TP16 {
 		Tree tree = manager.getTree();
 		System.out.println(manager.printTree());
 		
-		String password = "abccouscousabc1";
+		String password = "abccouscous1";
 		System.out.println(manager.contains(password));
 		
 		int[] passwordPositions = manager.containsPosition(password);
