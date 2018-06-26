@@ -1,6 +1,9 @@
 package com.tactfactory.algotojava.tp17.model;
 
-public abstract class Armure implements Butin {
+public abstract class Armure implements Butin, Statable {
+
+	protected static final String STATS = "%d defense %s";
+	
 	private int defense;
 
 	public int getDefense() {

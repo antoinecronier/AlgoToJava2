@@ -1,6 +1,8 @@
 package com.tactfactory.algotojava.tp17.model;
 
 public class ArmeMixte extends Arme {
+	
+	private static final String STATS = "%d degat d'attaque %s et %d degat d'attaque %s";
 
 	private ArmePhysique armePhysique;
 	private ArmeMagique armeMagique;
@@ -40,5 +42,10 @@ public class ArmeMixte extends Arme {
 					(this.getArmePhysique().getDegat());
 		}
 		return result > 0 ? result : 0;
+	}
+
+	@Override
+	public String getStats() {
+		return String.format(STATS, this.getArmeMagique().getDegat(), ArmeMagique.TYPE, this.getArmePhysique().getDegat(), ArmePhysique.TYPE);
 	}
 }

@@ -1,6 +1,7 @@
 package com.tactfactory.algotojava.tp17.model;
 
 public class ArmureMagique extends Armure {
+	public static final String TYPE = "magique";
 
 	public ArmureMagique() {
 	}
@@ -12,6 +13,11 @@ public class ArmureMagique extends Armure {
 	@Override
 	public int receiveAttack(Arme arme) {
 		return 0;
+	}
+
+	@Override
+	public String getStats() {
+		return String.format(STATS, getDefense(), TYPE);
 	}
 
 }

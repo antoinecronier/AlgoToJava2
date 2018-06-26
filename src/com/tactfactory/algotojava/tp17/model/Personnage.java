@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tactfactory.algotojava.tp17.model.rpg.Classe;
+import com.tactfactory.algotojava.tp17.model.rpg.Paladin;
 
 public abstract class Personnage {
+	private final static String EQUIPWEAPON = "%s s'equipe d'une arme %s avec %s";
+	private final static String EQUIPARMOR = "%s s'equipe d'une armure %s avec %s";
 
 	private String name;
 	private int life;
@@ -44,7 +47,12 @@ public abstract class Personnage {
 	}
 	
 	public void setArme(Arme arme) {
-		this.arme = arme;
+		if (this.getClasse().isEquipable(arme)) {
+			this.arme = arme;
+			System.out.println(String.format(EQUIPWEAPON,this.getName(), arme.getClass().getSimpleName(),arme.getStats()));
+		}else{
+			System.out.println(this.getClasse().getWeaponRestriction());
+		}
 	}
 	
 	public Armure getArmure() {
@@ -52,7 +60,12 @@ public abstract class Personnage {
 	}
 	
 	public void setArmure(Armure armure) {
-		this.armure = armure;
+		if (this.getClasse().isEquipable(armure)) {
+			this.armure = armure;
+			System.out.println(String.format(EQUIPARMOR,this.getName(), armure.getClass().getSimpleName(),armure.getStats()));
+		}else{
+			System.out.println(this.getClasse().getArmorRestriction());
+		}
 	}
 	
 	public Classe getClasse() {

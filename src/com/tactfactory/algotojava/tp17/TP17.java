@@ -18,19 +18,25 @@ public class TP17 {
 		Personnage paladin = new Hero(new DefaultPaladin());
 		Personnage mob1 = new Mob(new DefaultFighter());
 		
-		paladin.setArme(new ArmeMixte(new ArmePhysique(2, 1), new ArmeMagique(3, 1)));
-		paladin.setArmure(new ArmureMixte(new ArmureMagique(1), new ArmurePhysique(3)));
-		
 		paladin.setActionPoint(10);
 		paladin.setLife(23);
 		paladin.setName("jean paladin");
 		
-		mob1.setArme(new ArmePhysique(3,1));
-		mob1.setArmure(new ArmurePhysique(2));
+		paladin.setArme(new ArmeMixte(new ArmePhysique(2, 1), new ArmeMagique(3, 1)));
+		paladin.setArmure(new ArmureMixte(new ArmureMagique(1), new ArmurePhysique(3)));
+		
+		paladin.setArme(new ArmeMagique(2, 3));
+		paladin.setArme(new ArmePhysique(2, 3));
+		
+		paladin.setArmure(new ArmureMagique(2));
+		paladin.setArmure(new ArmurePhysique(4));
 		
 		mob1.setActionPoint(10);
 		mob1.setLife(23);
 		mob1.setName("jean mob");
+		
+		mob1.setArme(new ArmePhysique(3,1));
+		mob1.setArmure(new ArmurePhysique(2));
 		
 		paladin.getClasse().fight(paladin,mob1);
 		mob1.getClasse().fight(mob1,paladin);
