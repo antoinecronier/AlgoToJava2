@@ -2,10 +2,11 @@ package com.tactfactory.algotojava.tp17.model;
 
 public class ArmeMagique extends Arme {
 
-	@Override
-	public int attack(Armure armure) {
-		// TODO Auto-generated method stub
-		return 0;
+	public ArmeMagique() {
+	}
+
+	public ArmeMagique(int degat, int actionPoint) {
+		super(degat, actionPoint);
 	}
 
 }

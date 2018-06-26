@@ -4,13 +4,7 @@ import com.tactfactory.algotojava.tp17.model.Arme;
 import com.tactfactory.algotojava.tp17.model.Personnage;
 import com.tactfactory.algotojava.tp17.model.rpg.Barbare;
 
-public class DefaultBarbare implements Barbare {
-
-	@Override
-	public void Fight(Personnage personnage) {
-		// TODO Auto-generated method stub
-		
-	}
+public class DefaultBarbare extends DefaultFighter implements Barbare {
 
 	@Override
 	public void setSecondaryWeapon(Arme arme) {

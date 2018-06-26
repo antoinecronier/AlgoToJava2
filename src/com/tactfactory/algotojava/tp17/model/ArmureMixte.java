@@ -21,9 +21,14 @@ public class ArmureMixte extends Armure {
 		this.armurePhysique = armurePhysique;
 	}
 
+	public ArmureMixte(ArmureMagique armureMagique, ArmurePhysique armurePhysique) {
+		super();
+		this.armureMagique = armureMagique;
+		this.armurePhysique = armurePhysique;
+	}
+
 	@Override
 	public int receiveAttack(Arme arme) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

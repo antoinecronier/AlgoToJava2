@@ -21,9 +21,24 @@ public class ArmeMixte extends Arme {
 		this.armeMagique = armeMagique;
 	}
 
+	public ArmeMixte(ArmePhysique armePhysique, ArmeMagique armeMagique) {
+		this.armePhysique = armePhysique;
+		this.armeMagique = armeMagique;
+	}
+
 	@Override
 	public int attack(Armure armure) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		if (armure instanceof ArmureMixte) {
+			result = (this.getArmeMagique().getDegat() - ((ArmureMixte)armure).getArmureMagique().getDefense())+
+					(this.getArmePhysique().getDegat() - ((ArmureMixte)armure).getArmurePhysique().getDefense());
+		}else if (armure instanceof ArmurePhysique) {
+			result = (this.getArmeMagique().getDegat())+
+					(this.getArmePhysique().getDegat() - armure.getDefense());
+		}else if (armure instanceof ArmureMagique) {
+			result = (this.getArmeMagique().getDegat() - armure.getDefense())+
+					(this.getArmePhysique().getDegat());
+		}
+		return result > 0 ? result : 0;
 	}
 }

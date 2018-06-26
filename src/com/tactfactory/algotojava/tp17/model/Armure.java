@@ -11,5 +11,12 @@ public abstract class Armure implements Butin {
 		this.defense = defense;
 	}
 	
+	public Armure() {
+	}
+	
+	public Armure(int defense) {
+		this.defense = defense;
+	}
+
 	public abstract int receiveAttack(Arme arme);
 }
