@@ -16,4 +16,18 @@ public class ArmePhysique extends Arme {
 		return String.format(STATS, getDegat(), TYPE);
 	}
 
+	@Override
+	public int attack(Armure armure) {
+		int result = 0;
+		
+		if (armure instanceof ArmurePhysique) {
+			result = this.getDegat() - armure.getDefense();
+		}else if(armure instanceof ArmureMixte){
+			result = this.getDegat() - ((ArmureMixte)armure).getArmurePhysique().getDefense();
+		}else{
+			result = this.getDegat();
+		}
+		
+		return result > 0 ? result : 0;
+	}
 }

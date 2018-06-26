@@ -16,4 +16,18 @@ public class ArmeMagique extends Arme {
 		return String.format(STATS, getDegat(), TYPE);
 	}
 
+	@Override
+	public int attack(Armure armure) {
+		int result = 0;
+		
+		if (armure instanceof ArmureMagique) {
+			result = this.getDegat() - armure.getDefense();
+		}else if(armure instanceof ArmureMixte){
+			result = this.getDegat() - ((ArmureMixte)armure).getArmureMagique().getDefense();
+		}else{
+			result = this.getDegat();
+		}
+		
+		return result > 0 ? result : 0;
+	}
 }
