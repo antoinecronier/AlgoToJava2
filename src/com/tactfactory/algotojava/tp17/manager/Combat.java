@@ -53,7 +53,7 @@ public class Combat {
 		boolean result = false;
 		
 		for (Personnage personnage : personnages) {
-			if (personnage.getLife()>0) {
+			if (personnage.getCharacteristic().getLife()>0) {
 				result = true;
 			}
 		}
@@ -65,13 +65,13 @@ public class Combat {
 		Personnage result = null;
 
 		for (Personnage personnage : personnages) {
-			if (personnage.getLife() > 0 && personnage.getCurrentActionPoint() - personnage.getArme().getActionPoint() >= 0 && !personnage.equals(lastPersonnage)) {
+			if (personnage.getCharacteristic().getLife() > 0 && personnage.getCharacteristic().getCurrentActionPoint() - personnage.getArme().getActionPoint() >= 0 && !personnage.equals(lastPersonnage)) {
 				result = personnage;
 				break;
 			}
 		}
 		
-		if (result == null && lastPersonnage.getLife() > 0 && lastPersonnage.getCurrentActionPoint() - lastPersonnage.getArme().getActionPoint() >= 0) {
+		if (result == null && lastPersonnage.getCharacteristic().getLife() > 0 && lastPersonnage.getCharacteristic().getCurrentActionPoint() - lastPersonnage.getArme().getActionPoint() >= 0) {
 			result = lastPersonnage;
 		}
 
@@ -80,7 +80,7 @@ public class Combat {
 
 	private void setUp(List<Personnage> personnages) {
 		for (Personnage personnage : personnages) {
-			personnage.setCurrentActionPoint(personnage.getActionPoint());
+			personnage.getCharacteristic().setCurrentActionPoint(personnage.getCharacteristic().getActionPoint());
 		}
 	}
 
@@ -98,10 +98,10 @@ public class Combat {
 		StringBuilder result = new StringBuilder();
 
 		for (Personnage personnage : personnages) {
-			if (personnage.getLife() <= 0) {
+			if (personnage.getCharacteristic().getLife() <= 0) {
 				result.append(String.format(CHARACTER_DIED, personnage.getName()));
 			} else {
-				result.append(String.format(CHARACTER_ALIVE, personnage.getName(), personnage.getLife()));
+				result.append(String.format(CHARACTER_ALIVE, personnage.getName(), personnage.getCharacteristic().getLife()));
 			}
 		}
 
@@ -109,8 +109,8 @@ public class Combat {
 	}
 
 	private void round(Personnage attacker, Personnage defender) {
-		if (attacker.getCurrentActionPoint() - attacker.getArme().getRealActionPoint() >= 0) {
-			attacker.setCurrentActionPoint(attacker.getCurrentActionPoint() - attacker.getArme().getActionPoint());
+		if (attacker.getCharacteristic().getCurrentActionPoint() - attacker.getArme().getRealActionPoint() >= 0) {
+			attacker.getCharacteristic().setCurrentActionPoint(attacker.getCharacteristic().getCurrentActionPoint() - attacker.getArme().getActionPoint());
 			attacker.getClasse().fight(defender);
 		}
 	}

@@ -10,9 +10,7 @@ public abstract class Personnage {
 	private final static String EQUIPARMOR = "%s s'equipe d'une armure %s avec %s";
 
 	private String name;
-	private int life;
-	private int actionPoint;
-	private int currentActionPoint;
+	Characteristic characteristic;
 	private Arme arme;
 	private Armure armure;
 	private Classe classe;
@@ -25,29 +23,13 @@ public abstract class Personnage {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public int getLife() {
-		return life;
-	}
-	
-	public void setLife(int life) {
-		this.life = life;
-	}
-	
-	public int getActionPoint() {
-		return actionPoint;
-	}
-	
-	public void setActionPoint(int actionPoint) {
-		this.actionPoint = actionPoint;
-	}
-	
-	public int getCurrentActionPoint() {
-		return currentActionPoint;
+
+	public Characteristic getCharacteristic() {
+		return characteristic;
 	}
 
-	public void setCurrentActionPoint(int currentActionPoint) {
-		this.currentActionPoint = currentActionPoint;
+	public void setCharacteristic(Characteristic characteristic) {
+		this.characteristic = characteristic;
 	}
 
 	public Arme getArme() {

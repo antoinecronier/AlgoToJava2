@@ -32,10 +32,10 @@ public class DefaultBarbare extends DefaultFighter implements Barbare {
 	
 	@Override
 	public void fight(Personnage defender) {
-		if (this.getPersonnage().getLife() > 0) {
+		if (this.getPersonnage().getCharacteristic().getLife() > 0) {
 			int damage = this.getPersonnage().getArme().attack(defender.getArmure()) + this.getSecondaryWeapon().getDegat();
-			defender.setLife(defender.getLife() - damage);
-			System.out.println(String.format(Classe.ATTACK, this.getPersonnage().getName(), damage, defender.getName(), defender.getLife()));
+			defender.getCharacteristic().setLife(defender.getCharacteristic().getLife() - damage);
+			System.out.println(String.format(Classe.ATTACK, this.getPersonnage().getName(), damage, defender.getName(), defender.getCharacteristic().getLife()));
 		}
 	}
 
