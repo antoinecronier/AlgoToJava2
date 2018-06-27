@@ -4,21 +4,39 @@ import com.tactfactory.algotojava.tp17.model.Arme;
 import com.tactfactory.algotojava.tp17.model.ArmePhysique;
 import com.tactfactory.algotojava.tp17.model.Armure;
 import com.tactfactory.algotojava.tp17.model.ArmurePhysique;
+import com.tactfactory.algotojava.tp17.model.Personnage;
 import com.tactfactory.algotojava.tp17.model.rpg.Barbare;
 import com.tactfactory.algotojava.tp17.model.rpg.Classe;
 
 public class DefaultBarbare extends DefaultFighter implements Barbare {
 
+	private final static String EQUIPWEAPON = "%s s'equipe d'une arme %s avec %s";
+	
+	private Arme secondaryWeapon;
+
 	@Override
-	public void setSecondaryWeapon(Arme arme) {
-		// TODO Auto-generated method stub
-		
+	public void setSecondaryWeapon(Arme secondaryWeapon) {
+		if (this.isEquipable(secondaryWeapon)) {
+			this.secondaryWeapon = secondaryWeapon;
+			this.getPersonnage().getArme().setRealActionPoint((this.getPersonnage().getArme().getActionPoint()+this.getSecondaryWeapon().getDegat())/2);
+			System.out.println(String.format(EQUIPWEAPON,this.getPersonnage().getName(), secondaryWeapon.getClass().getSimpleName(),secondaryWeapon.getStats()));
+		}else{
+			System.out.println(this.getWeaponRestriction());
+		}
 	}
 
 	@Override
 	public Arme getSecondaryWeapon() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.secondaryWeapon;
+	}
+	
+	@Override
+	public void fight(Personnage defender) {
+		if (this.getPersonnage().getLife() > 0) {
+			int damage = this.getPersonnage().getArme().attack(defender.getArmure()) + this.getSecondaryWeapon().getDegat();
+			defender.setLife(defender.getLife() - damage);
+			System.out.println(String.format(Classe.ATTACK, this.getPersonnage().getName(), damage, defender.getName(), defender.getLife()));
+		}
 	}
 
 	@Override

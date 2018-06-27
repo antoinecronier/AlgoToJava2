@@ -10,7 +10,7 @@ import com.tactfactory.algotojava.tp17.model.rpg.Classe;
 import com.tactfactory.algotojava.tp17.model.rpg.Paladin;
 
 public class DefaultPaladin extends DefaultFighter implements Paladin {
-
+	
 	@Override
 	public boolean isEquipable(Arme arme) {
 		boolean result = false;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tactfactory.algotojava.tp17.model.rpg.Classe;
-import com.tactfactory.algotojava.tp17.model.rpg.Paladin;
 
 public abstract class Personnage {
 	private final static String EQUIPWEAPON = "%s s'equipe d'une arme %s avec %s";
@@ -13,6 +12,7 @@ public abstract class Personnage {
 	private String name;
 	private int life;
 	private int actionPoint;
+	private int currentActionPoint;
 	private Arme arme;
 	private Armure armure;
 	private Classe classe;
@@ -42,6 +42,14 @@ public abstract class Personnage {
 		this.actionPoint = actionPoint;
 	}
 	
+	public int getCurrentActionPoint() {
+		return currentActionPoint;
+	}
+
+	public void setCurrentActionPoint(int currentActionPoint) {
+		this.currentActionPoint = currentActionPoint;
+	}
+
 	public Arme getArme() {
 		return arme;
 	}

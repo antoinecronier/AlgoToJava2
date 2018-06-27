@@ -2,14 +2,11 @@ package com.tactfactory.algotojava.tp17.model.rpg.defaultclasse;
 
 import com.tactfactory.algotojava.tp17.model.Arme;
 import com.tactfactory.algotojava.tp17.model.ArmeMagique;
-import com.tactfactory.algotojava.tp17.model.ArmePhysique;
 import com.tactfactory.algotojava.tp17.model.Armure;
 import com.tactfactory.algotojava.tp17.model.ArmureMagique;
-import com.tactfactory.algotojava.tp17.model.ArmurePhysique;
 import com.tactfactory.algotojava.tp17.model.Personnage;
 import com.tactfactory.algotojava.tp17.model.rpg.Classe;
 import com.tactfactory.algotojava.tp17.model.rpg.Mage;
-import com.tactfactory.algotojava.tp17.model.rpg.Paladin;
 
 public class DefaultMage extends DefaultFighter implements Mage {
 

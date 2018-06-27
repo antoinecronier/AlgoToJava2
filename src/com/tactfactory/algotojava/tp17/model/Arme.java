@@ -6,6 +6,7 @@ public abstract class Arme implements Butin, Statable {
 	
 	private int degat;
 	private int actionPoint;
+	private int realActionPoint;
 
 	public int getDegat() {
 		return degat;
@@ -23,12 +24,21 @@ public abstract class Arme implements Butin, Statable {
 		this.actionPoint = actionPoint;
 	}
 
+	public int getRealActionPoint() {
+		return realActionPoint;
+	}
+
+	public void setRealActionPoint(int realActionPoint) {
+		this.realActionPoint = realActionPoint;
+	}
+
 	public Arme() {
 	}
 
 	public Arme(int degat, int actionPoint) {
 		this.degat = degat;
 		this.actionPoint = actionPoint;
+		this.realActionPoint = actionPoint;
 	}
 
 	public int attack(Armure armure) {
