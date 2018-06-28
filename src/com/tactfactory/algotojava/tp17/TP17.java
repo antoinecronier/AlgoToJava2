@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.tactfactory.algotojava.tp17.database.DBManager;
 import com.tactfactory.algotojava.tp17.database.DBOpenHelper;
+import com.tactfactory.algotojava.tp17.database.manager.DBItemManager;
 import com.tactfactory.algotojava.tp17.database.model.ArmePhysiqueDB;
 import com.tactfactory.algotojava.tp17.manager.Combat;
 import com.tactfactory.algotojava.tp17.manager.PersonnageBuilder;
@@ -18,13 +19,15 @@ import com.tactfactory.algotojava.tp17.model.rpg.defaultclasse.DefaultPaladin;
 public class TP17 {
 
 	public static void main(String[] args) {
-		DBOpenHelper.getInstance();
-		DBManager manager = new DBManager();
 		
-		ArmePhysiqueDB apDB = new ArmePhysiqueDB();
-		apDB.insert(new ArmePhysique(3, 2));
-		//do1(manager);
+		DBItemManager<ArmePhysiqueDB> manager = new DBItemManager<ArmePhysiqueDB>(new ArmePhysiqueDB(){{setArmePhysique(new ArmePhysique(3, 1));}});
 
+		manager.insert();
+		for (ArmePhysiqueDB items : manager.select()) {
+			System.out.println("Arme :\n\tdegat :" + items.getArmePhysique().getDegat() + "\n\tactions points :" + items.getArmePhysique().getActionPoint());
+		}
+		
+		
 		try {
 			DBOpenHelper.getInstance().getConn().close();
 		} catch (SQLException e) {

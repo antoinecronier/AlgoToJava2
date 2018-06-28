@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBManager {
 
@@ -41,6 +43,28 @@ public class DBManager {
 			rs = stmt.executeQuery(request);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	public List<String> selectRequestStrings(String request) {
+		List<String> result = new ArrayList<String>();
+
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = DBOpenHelper.getInstance().getConn().createStatement();
+			rs = stmt.executeQuery(request);
+			while (rs.next()) {
+				ResultSetMetaData rsmd = rs.getMetaData();
+				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+					result.add(rs.getString(i));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		} finally {
 			try {
 				rs.close();
@@ -50,6 +74,6 @@ public class DBManager {
 			}
 		}
 
-		return rs;
+		return result;
 	}
 }

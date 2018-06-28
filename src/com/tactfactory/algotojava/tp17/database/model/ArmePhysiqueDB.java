@@ -1,23 +1,15 @@
 package com.tactfactory.algotojava.tp17.database.model;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.tactfactory.algotojava.tp17.database.DBManager;
 import com.tactfactory.algotojava.tp17.model.ArmePhysique;
 
-public class ArmePhysiqueDB {
+public class ArmePhysiqueDB extends DBBaseItem {
 
-	private static final String INSERT = "INSERT INTO %s VALUES(%d,%d)";
-	private static final String SELECT = "SELECT * FROM %s %s";
 	private static final String TABLE = "ArmePhysique";
 	private static final String ID = "id";
-	private static final String WHERE_ID = "WHERE " + ID + " = %d";
+	private static final String[][] FIELDS = { { "degat", "INT NOT NULL" }, { "actionPoint", "INT NOT NULL" } };
 
 	private ArmePhysique armePhysique;
-	private DBManager manager = new DBManager();
 
 	public ArmePhysique getArmePhysique() {
 		return armePhysique;
@@ -27,46 +19,52 @@ public class ArmePhysiqueDB {
 		this.armePhysique = armePhysique;
 	}
 
-	public ArmePhysique select(int id) {
-		ArmePhysique result = new ArmePhysique();
+	@Override
+	public ArmePhysique getItem() {
+		// TODO Auto-generated method stub
+		return this.getArmePhysique();
+	}
 
-		ResultSet rs = manager.selectRequest(String.format(SELECT, TABLE, String.format(WHERE_ID, id)));
+	public ArmePhysiqueDB() {
+		super(TABLE, ID);
+	}
+
+	@Override
+	public ArmePhysiqueDB parseIn(ResultSet rs) {
+		ArmePhysique result = new ArmePhysique();
 		try {
 			while (rs.next()) {
 				result.setDegat(rs.getInt("degat"));
 				result.setActionPoint(rs.getInt("actionPoint"));
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 		}
-
-		return result;
+		this.armePhysique = result;
+		return this;
 	}
 
-	public List<ArmePhysique> select() {
-		List<ArmePhysique> result = new ArrayList<ArmePhysique>();
+	@Override
+	public String parseOut(Object item) {
+		return ((ArmePhysique)item).getDegat() + "," + ((ArmePhysique)item).getActionPoint();
+	}
 
-		ResultSet rs = manager.selectRequest(String.format(SELECT, TABLE, ""));
-		try {
-			while (rs.next()) {
-				result.add(new ArmePhysique(rs.getInt("degat"), rs.getInt("actionPoint")));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+	@Override
+	public String getSchema() {
+		return "CREATE TABLE " + TABLE + " ("  
+				+ ID + " INT AUTO_INCREMENT PRIMARY KEY NOT NULL," 
+				+ FIELDS[0][0] + " " + FIELDS[0][1] + ","
+				+ FIELDS[1][0] + " " + FIELDS[1][1] + ""
+				+ ")";
+	}
+
+	@Override
+	public String getFields() {
+		String result = "";
+		int i = 0;
+		for (; i < FIELDS.length-1; i++) {
+			result += FIELDS[i][0] + ",";
 		}
-
+		result += FIELDS[i][0];
 		return result;
-	}
-
-	public void insert(ArmePhysique armePhysique) {
-		manager.creationRequest(String.format(INSERT, TABLE, armePhysique.getDegat(), armePhysique.getActionPoint()));
-	}
-
-	public void update(ArmePhysique armePhysique) {
-
-	}
-
-	public void delete(ArmePhysique armePhysique) {
-
 	}
 }
