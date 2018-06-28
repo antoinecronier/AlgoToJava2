@@ -11,16 +11,18 @@ import com.tactfactory.algotojava.tp17.model.rpg.Classe;
 public class DefaultBarbare extends DefaultFighter implements Barbare {
 
 	private final static String EQUIPWEAPON = "%s s'equipe d'une arme %s avec %s";
-	
+
 	private Arme secondaryWeapon;
 
 	@Override
 	public void setSecondaryWeapon(Arme secondaryWeapon) {
 		if (this.isEquipable(secondaryWeapon)) {
 			this.secondaryWeapon = secondaryWeapon;
-			this.getPersonnage().getArme().setRealActionPoint((this.getPersonnage().getArme().getActionPoint()+this.getSecondaryWeapon().getDegat())/2);
-			System.out.println(String.format(EQUIPWEAPON,this.getPersonnage().getName(), secondaryWeapon.getClass().getSimpleName(),secondaryWeapon.getStats()));
-		}else{
+			this.getPersonnage().getArme().setRealActionPoint(
+					(this.getPersonnage().getArme().getActionPoint() + this.getSecondaryWeapon().getDegat()) / 2);
+			System.out.println(String.format(EQUIPWEAPON, this.getPersonnage().getName(),
+					secondaryWeapon.getClass().getSimpleName(), secondaryWeapon.getStats()));
+		} else {
 			System.out.println(this.getWeaponRestriction());
 		}
 	}
@@ -29,13 +31,15 @@ public class DefaultBarbare extends DefaultFighter implements Barbare {
 	public Arme getSecondaryWeapon() {
 		return this.secondaryWeapon;
 	}
-	
+
 	@Override
 	public void fight(Personnage defender) {
 		if (this.getPersonnage().getCharacteristic().getLife() > 0) {
-			int damage = this.getPersonnage().getArme().attack(defender.getArmure()) + this.getSecondaryWeapon().getDegat();
+			int damage = this.getPersonnage().getArme().attack(defender.getArmure())
+					+ this.getSecondaryWeapon().getDegat();
 			defender.getCharacteristic().setLife(defender.getCharacteristic().getLife() - damage);
-			System.out.println(String.format(Classe.ATTACK, this.getPersonnage().getName(), damage, defender.getName(), defender.getCharacteristic().getLife()));
+			System.out.println(String.format(Classe.ATTACK, this.getPersonnage().getName(), damage, defender.getName(),
+					defender.getCharacteristic().getLife()));
 		}
 	}
 

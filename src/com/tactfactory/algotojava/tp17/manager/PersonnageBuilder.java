@@ -93,6 +93,38 @@ public class PersonnageBuilder {
 		setDefaultEquipment();
 		return this;
 	}
+	
+	/////////////////// mob generation /////////////////
+	public PersonnageBuilder setDefaultMob(int difficulty){
+		this.personnage = new Mob();
+		this.classe = new DefaultFighter();
+		this.personnage.setClasse(classe);
+		setDefaultCharacteristic(difficulty);
+		setDefaultEquipment(difficulty);
+		return this;
+	}
+
+	private PersonnageBuilder setDefaultEquipment(int difficulty) {
+		if (this.personnage.getClasse() instanceof Barbare) {
+			this.arme = new ArmePhysique(3, 2);
+			this.armure = new ArmurePhysique(2);
+		}else if (this.personnage.getClasse() instanceof Mage) {
+			this.arme = new ArmeMagique(3, 2);
+			this.armure = new ArmureMagique(2);
+		}else if (this.personnage.getClasse() instanceof Paladin) {
+			this.arme = new ArmeMixte(new ArmePhysique(2, 1),new ArmeMagique(2, 2));
+			this.armure = new ArmureMixte(new ArmureMagique(2),new ArmurePhysique(2));
+		}else{
+			this.arme = new ArmePhysique(3, 2);
+			this.armure = new ArmurePhysique(2);
+		}
+		return this;
+	}
+
+	private PersonnageBuilder setDefaultCharacteristic(int difficulty) {
+		this.characteristic = new Characteristic(23, 8);
+		return this;
+	}
 
 	public Personnage build() {
 		if (personnage == null) {
@@ -123,11 +155,11 @@ public class PersonnageBuilder {
 			butins = LootGenerator.generateLoots();
 		}
 
+		this.personnage.setName(name);
 		this.personnage.setClasse(classe);
 		this.personnage.getClasse().setPersonnage(personnage);
 		this.personnage.setArme(arme);
 		this.personnage.setArmure(armure);
-		this.personnage.setName(name);
 		this.personnage.setCharacteristic(characteristic);
 		this.personnage.setButins(butins);
 		

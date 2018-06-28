@@ -36,7 +36,6 @@ public class LootGenerator {
 			case 0:
 				item = new ArmePhysique(rand.nextInt(4), rand.nextInt(6));
 				break;
-
 			case 1:
 				item = new ArmurePhysique(rand.nextInt(3));
 				break;

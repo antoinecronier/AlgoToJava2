@@ -1,27 +1,55 @@
 package com.tactfactory.algotojava.tp17;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.tactfactory.algotojava.tp17.database.DBManager;
+import com.tactfactory.algotojava.tp17.database.DBOpenHelper;
 import com.tactfactory.algotojava.tp17.manager.Combat;
 import com.tactfactory.algotojava.tp17.manager.PersonnageBuilder;
-import com.tactfactory.algotojava.tp17.model.ArmeMagique;
-import com.tactfactory.algotojava.tp17.model.ArmeMixte;
 import com.tactfactory.algotojava.tp17.model.ArmePhysique;
-import com.tactfactory.algotojava.tp17.model.ArmureMagique;
-import com.tactfactory.algotojava.tp17.model.ArmureMixte;
-import com.tactfactory.algotojava.tp17.model.ArmurePhysique;
-import com.tactfactory.algotojava.tp17.model.Hero;
-import com.tactfactory.algotojava.tp17.model.Mob;
 import com.tactfactory.algotojava.tp17.model.Personnage;
 import com.tactfactory.algotojava.tp17.model.rpg.Barbare;
 import com.tactfactory.algotojava.tp17.model.rpg.defaultclasse.DefaultBarbare;
-import com.tactfactory.algotojava.tp17.model.rpg.defaultclasse.DefaultFighter;
 import com.tactfactory.algotojava.tp17.model.rpg.defaultclasse.DefaultMage;
 import com.tactfactory.algotojava.tp17.model.rpg.defaultclasse.DefaultPaladin;
 
 public class TP17 {
 
 	public static void main(String[] args) {
+		DBOpenHelper.getInstance();
+		DBManager manager = new DBManager();
+		System.out.println(manager.selectRequest("SHOW TABLES"));
+
+		manager.creationRequest("DELETE FROM User");
+		manager.creationRequest("DELETE FROM Role");
+		manager.creationRequest("ALTER TABLE User AUTO_INCREMENT = 0");
+		manager.creationRequest("ALTER TABLE Role AUTO_INCREMENT = 0");
+
+		for (int i = 1; i <= 20; i++) {
+			manager.creationRequest("INSERT INTO User VALUES(" + i + ",'" + "User" + i + "',NULL)");
+		}
+
+		for (int i = 1; i <= 3; i++) {
+			manager.creationRequest("INSERT INTO Role VALUES(" + i + ",'" + "Role" + i + "')");
+		}
+
+		for (int i = 1; i <= 20; i++) {
+			manager.creationRequest("UPDATE User" + " SET id_Role = '" + ((i % 3)+1) + "' WHERE User.id = " + i);
+		}
+
+		System.out.println(manager.selectRequest("SELECT * FROM User"));
+		System.out.println(manager.selectRequest("SELECT * FROM Role"));
+		System.out.println(manager.selectRequest("SELECT * FROM User INNER JOIN Role ON User.id_Role = Role.id"));
+
+		try {
+			DBOpenHelper.getInstance().getConn().close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void setUp() {
 		PersonnageBuilder builder = new PersonnageBuilder();
 
 		Personnage paladin = builder.setName("paladin").setDefaultHero(new DefaultPaladin()).build();
@@ -58,5 +86,4 @@ public class TP17 {
 		});
 		combat.fightNoBack();
 	}
-
 }
