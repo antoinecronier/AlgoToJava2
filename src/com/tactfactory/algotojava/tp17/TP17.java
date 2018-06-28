@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.tactfactory.algotojava.tp17.database.DBManager;
 import com.tactfactory.algotojava.tp17.database.DBOpenHelper;
+import com.tactfactory.algotojava.tp17.database.model.ArmePhysiqueDB;
 import com.tactfactory.algotojava.tp17.manager.Combat;
 import com.tactfactory.algotojava.tp17.manager.PersonnageBuilder;
 import com.tactfactory.algotojava.tp17.model.ArmePhysique;
@@ -19,6 +20,19 @@ public class TP17 {
 	public static void main(String[] args) {
 		DBOpenHelper.getInstance();
 		DBManager manager = new DBManager();
+		
+		ArmePhysiqueDB apDB = new ArmePhysiqueDB();
+		apDB.insert(new ArmePhysique(3, 2));
+		//do1(manager);
+
+		try {
+			DBOpenHelper.getInstance().getConn().close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void do1(DBManager manager) {
 		System.out.println(manager.selectRequest("SHOW TABLES"));
 
 		manager.creationRequest("DELETE FROM User");
@@ -35,18 +49,12 @@ public class TP17 {
 		}
 
 		for (int i = 1; i <= 20; i++) {
-			manager.creationRequest("UPDATE User" + " SET id_Role = '" + ((i % 3)+1) + "' WHERE User.id = " + i);
+			manager.creationRequest("UPDATE User SET id_Role = '" + ((i % 3)+1) + "' WHERE User.id = " + i);
 		}
 
 		System.out.println(manager.selectRequest("SELECT * FROM User"));
 		System.out.println(manager.selectRequest("SELECT * FROM Role"));
-		System.out.println(manager.selectRequest("SELECT * FROM User INNER JOIN Role ON User.id_Role = Role.id"));
-
-		try {
-			DBOpenHelper.getInstance().getConn().close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		System.out.println(manager.selectRequest("SELECT * FROM User INNER JOIN Role ON User.id_Role = Role.id ORDER BY User.id"));
 	}
 
 	public static void setUp() {
