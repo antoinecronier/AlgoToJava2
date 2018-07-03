@@ -7,7 +7,10 @@ public class ArmePhysiqueDB extends DBBaseItem {
 
 	private static final String TABLE = "ArmePhysique";
 	private static final String ID = "id";
-	private static final String[][] FIELDS = { { "degat", "INT NOT NULL" }, { "actionPoint", "INT NOT NULL" } };
+	private static final String[][] FIELDS = { 
+			{ "degat", "INT NOT NULL" }, 
+			{ "actionPoint", "INT NOT NULL" } 
+			};
 
 	private ArmePhysique armePhysique;
 
@@ -21,7 +24,6 @@ public class ArmePhysiqueDB extends DBBaseItem {
 
 	@Override
 	public ArmePhysique getItem() {
-		// TODO Auto-generated method stub
 		return this.getArmePhysique();
 	}
 
@@ -34,8 +36,8 @@ public class ArmePhysiqueDB extends DBBaseItem {
 		ArmePhysique result = new ArmePhysique();
 		try {
 			while (rs.next()) {
-				result.setDegat(rs.getInt("degat"));
-				result.setActionPoint(rs.getInt("actionPoint"));
+				result.setDegat(rs.getInt(FIELDS[0][0]));
+				result.setActionPoint(rs.getInt(FIELDS[1][0]));
 			}
 		} catch (Exception e) {
 		}

@@ -16,28 +16,30 @@ public class DBItemManager<T extends DBBaseItem> {
 	
 	private DBManager manager = new DBManager();
 	private DBBaseItem baseItem;
+	private Class klazz;
 	
-	public DBItemManager(DBBaseItem baseItem) {
+	public DBItemManager(DBBaseItem baseItem,Class klazz) {
 		super();
 		this.baseItem = baseItem;
+		this.klazz = klazz;
 		if (!checkTableExists()) {
 			create();
 		}
 	}
 
 	public T select(int id){
-		T result = (T) baseItem;
 
 		ResultSet rs = manager.selectRequest(String.format(SELECT, baseItem.TABLE, String.format(WHERE_ID,baseItem.ID, id)));
 		try {
 			while (rs.next()) {
-				result = (T) result.parseIn(rs);
+				baseItem.setId(id);
+				baseItem.parseIn(rs);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return result;
+		return (T) baseItem;
 	}
 	
 	public List<T> select(){
@@ -46,7 +48,15 @@ public class DBItemManager<T extends DBBaseItem> {
 		ResultSet rs = manager.selectRequest(String.format(SELECT, "*", baseItem.TABLE, ""));
 		try {
 			while (rs.next()) {
-				result.add((T) baseItem.parseIn(rs));
+				try {
+					T item = (T) klazz.newInstance();
+					item = (T) baseItem.parseIn(rs);
+					result.add(item);
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -20,7 +20,7 @@ public class TP17 {
 
 	public static void main(String[] args) {
 		
-		DBItemManager<ArmePhysiqueDB> manager = new DBItemManager<ArmePhysiqueDB>(new ArmePhysiqueDB(){{setArmePhysique(new ArmePhysique(3, 1));}});
+		DBItemManager<ArmePhysiqueDB> manager = new DBItemManager<ArmePhysiqueDB>(new ArmePhysiqueDB(){{setArmePhysique(new ArmePhysique(3, 1));}},ArmePhysiqueDB.class);
 
 		manager.insert();
 		for (ArmePhysiqueDB items : manager.select()) {
