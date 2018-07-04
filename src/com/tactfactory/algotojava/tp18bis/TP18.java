@@ -1,5 +1,12 @@
 package com.tactfactory.algotojava.tp18bis;
 
+import com.tactfactory.algotojava.tp18bis.model.Card;
+import com.tactfactory.algotojava.tp18bis.model.CardValue;
+import com.tactfactory.algotojava.tp18bis.model.Carreau;
+import com.tactfactory.algotojava.tp18bis.model.Deck;
+import com.tactfactory.algotojava.tp18bis.model.Pique;
+import com.tactfactory.algotojava.tp18bis.model.Trefle;
+
 /**
  * 
  * Créer un programme permettant de joueur au poker contre une ia. On pourra
@@ -61,20 +68,8 @@ package com.tactfactory.algotojava.tp18bis;
 public class TP18 {
 	
 	public static void main(String[] args) {
-		StringBuilder carte = new StringBuilder();
-		carte.append(" _____ ");
-		carte.append("\n");
-		carte.append("|A ^  |");
-		carte.append("\n");
-		carte.append("| / \\ |");
-		carte.append("\n");
-		carte.append("| \\ / |");
-		carte.append("\n");
-		carte.append("|  .  |");
-		carte.append("\n");
-		carte.append("|____A|");
-		carte.append("\n");
-		System.out.println(carte.toString());
+		Deck pokerDeck = new Deck();
+		pokerDeck.print();
 	}
 	
 }
