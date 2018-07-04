@@ -1,5 +1,6 @@
 package com.tactfactory.algotojava.tp16;
 
+import com.tactfactory.algotojava.tp16.manager.PasswordDiscoverer;
 import com.tactfactory.algotojava.tp16.manager.TreeManager;
 import com.tactfactory.algotojava.tp16.model.Tree;
 
@@ -21,17 +22,19 @@ import com.tactfactory.algotojava.tp16.model.Tree;
 public class TP16 {
 
 	public static void main(String[] args){
-		TreeManager manager = new TreeManager("keyWords");
-		manager.compileTree(3);
-		Tree tree = manager.getTree();
-		System.out.println(manager.printTree());
-		
-		String password = "abccouscous1";
-		System.out.println(manager.contains(password));
-		
-		int[] passwordPositions = manager.containsPosition(password);
-		for (int i = 0; i < passwordPositions.length; i++) {
-			System.out.print(passwordPositions[i]);
-		}
+//		TreeManager manager = new TreeManager("keyWords");
+//		manager.compileTree(3);
+//		Tree tree = manager.getTree();
+//		System.out.println(manager.printTree());
+//		
+//		String password = "abccouscous1";
+//		System.out.println(manager.contains(password));
+//		
+//		int[] passwordPositions = manager.containsPosition(password);
+//		for (int i = 0; i < passwordPositions.length; i++) {
+//			System.out.print(passwordPositions[i]);
+//		}
+		PasswordDiscoverer disco = new PasswordDiscoverer(1, 20);
+		disco.foundPassword("AeflM56K6Cc");
 	}
 }
