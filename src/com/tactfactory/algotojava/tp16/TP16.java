@@ -1,5 +1,7 @@
 package com.tactfactory.algotojava.tp16;
 
+import java.io.File;
+
 import com.tactfactory.algotojava.tp16.manager.PasswordDiscoverer;
 import com.tactfactory.algotojava.tp16.manager.TreeManager;
 import com.tactfactory.algotojava.tp16.model.Tree;
