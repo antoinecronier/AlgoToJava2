@@ -48,10 +48,9 @@ public class Tree {
 			System.out.println("test " + word + " with : " + termTree.getTerme());
 			if (word.startsWith(termTree.getTerme())) {
 				result[0] = termTrees.indexOf(termTree)+1;
-			}
-			
-			if (termTree.contains(word,result,1)) {
-				break;
+				if (termTree.contains(word,result,1)) {
+					break;
+				}
 			}
 		}
 		

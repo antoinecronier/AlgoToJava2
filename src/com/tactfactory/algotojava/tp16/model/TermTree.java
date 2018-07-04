@@ -86,7 +86,7 @@ public class TermTree {
 		System.out.println("test " + word + " with : " + terme);
 		if (word.startsWith(terme)) {
 			String newWord = word.substring(terme.length(), word.length());
-			if (newWord.length() > 0) {
+			if (newWord.length() > 0 && step < order.length) {
 				for (TermTree termTree : termes) {
 					if (termTree.contains(newWord, order, step+1)) {
 						result = true;

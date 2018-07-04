@@ -23,18 +23,17 @@ public class TP16 {
 
 	public static void main(String[] args){
 //		TreeManager manager = new TreeManager("keyWords");
-//		manager.compileTree(3);
-//		Tree tree = manager.getTree();
+//		manager.compileTree(7);
 //		System.out.println(manager.printTree());
 //		
-//		String password = "abccouscous1";
+//		String password = "1111111";
 //		System.out.println(manager.contains(password));
 //		
 //		int[] passwordPositions = manager.containsPosition(password);
 //		for (int i = 0; i < passwordPositions.length; i++) {
-//			System.out.print(passwordPositions[i]);
+//			System.out.print(passwordPositions[i] + " ");
 //		}
 		PasswordDiscoverer disco = new PasswordDiscoverer(1, 20);
-		disco.foundPassword("AeflM56K6Cc");
+		disco.foundPassword("Fc23C6cZ");
 	}
 }

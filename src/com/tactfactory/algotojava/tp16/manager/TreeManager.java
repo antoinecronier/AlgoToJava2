@@ -71,4 +71,17 @@ public class TreeManager {
 
 		return builder.toString();
 	}
+
+	public void quickCompileTree(int inheritance) {
+		baseInheritance = inheritance;
+		if (inheritance > 1) {
+			for (TermTree termTree : tree.getTermTree()) {
+				termTree.getTermes().addAll(tree.getTermTree());
+			}
+		}
+	}
+
+	public int[] containsPosition(String password, int i) {
+		return tree.containsPosition(password, i);
+	}
 }

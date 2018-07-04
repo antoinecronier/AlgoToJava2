@@ -23,8 +23,11 @@ public class PasswordDiscoverer {
 				for (int j = 0; j < passwordPositions.length; j++) {
 					System.out.print(passwordPositions[j]+" ");
 				}
-				result = true;
-				break;
+				
+				if (passwordPositions.length == pwd.length()) {
+					result = true;
+					break;
+				}
 			}
 		}
 		
