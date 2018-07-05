@@ -5,10 +5,6 @@ import java.util.List;
 
 public class Deck implements Printable {
 
-	private final static String[][] POKER_DECK = new String[][] { { "A ", "_A", "14" }, { "R ", "_R", "13" },
-			{ "D ", "_D", "12" }, { "V ", "_V", "11" }, { "10", "10", "10" }, { "9 ", "_9", "9" }, { "8 ", "_8", "8" },
-			{ "7 ", "_7", "7" }, };
-
 	private List<Card> deck;
 
 	public List<Card> getDeck() {
@@ -21,27 +17,27 @@ public class Deck implements Printable {
 	}
 
 	private void initPokerDeck() {
-		for (int i = 0; i < POKER_DECK.length; i++) {
+		for (int i = 0; i < Coeur.POKER_DECK.length; i++) {
 			this.deck
-					.add(new Card(new CardValue(POKER_DECK[i][0], POKER_DECK[i][1], Integer.parseInt(POKER_DECK[i][2])),
+					.add(new Card(new CardValue(Coeur.POKER_DECK[i][0], Coeur.POKER_DECK[i][1], Integer.parseInt(Coeur.POKER_DECK[i][2])),
 							new Coeur()));
 		}
 
-		for (int i = 0; i < POKER_DECK.length; i++) {
+		for (int i = 0; i < Carreau.POKER_DECK.length; i++) {
 			this.deck
-					.add(new Card(new CardValue(POKER_DECK[i][0], POKER_DECK[i][1], Integer.parseInt(POKER_DECK[i][2])),
+					.add(new Card(new CardValue(Carreau.POKER_DECK[i][0], Carreau.POKER_DECK[i][1], Integer.parseInt(Carreau.POKER_DECK[i][2])),
 							new Carreau()));
 		}
 
-		for (int i = 0; i < POKER_DECK.length; i++) {
+		for (int i = 0; i < Pique.POKER_DECK.length; i++) {
 			this.deck
-					.add(new Card(new CardValue(POKER_DECK[i][0], POKER_DECK[i][1], Integer.parseInt(POKER_DECK[i][2])),
+					.add(new Card(new CardValue(Pique.POKER_DECK[i][0], Pique.POKER_DECK[i][1], Integer.parseInt(Pique.POKER_DECK[i][2])),
 							new Pique()));
 		}
 
-		for (int i = 0; i < POKER_DECK.length; i++) {
+		for (int i = 0; i < Trefle.POKER_DECK.length; i++) {
 			this.deck
-					.add(new Card(new CardValue(POKER_DECK[i][0], POKER_DECK[i][1], Integer.parseInt(POKER_DECK[i][2])),
+					.add(new Card(new CardValue(Trefle.POKER_DECK[i][0], Trefle.POKER_DECK[i][1], Integer.parseInt(Trefle.POKER_DECK[i][2])),
 							new Trefle()));
 		}
 	}
