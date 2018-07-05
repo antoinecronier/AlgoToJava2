@@ -21,7 +21,7 @@ public class CardValue {
 		this.representationRight = representationRight;
 	}
 
-	public int getValue() {
+	public Integer getValue() {
 		return value;
 	}
 	

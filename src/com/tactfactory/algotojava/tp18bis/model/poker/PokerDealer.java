@@ -9,7 +9,6 @@ public interface PokerDealer {
 
 	void dealCards(Player player);
 	void dealInitialCards(List<Player> players);
-	void endTurn(List<Player> players);
 	void retreiveCard(Card card);
 	void renewDeck();
 }

@@ -1,16 +1,25 @@
 package com.tactfactory.algotojava.tp18bis;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.tactfactory.algotojava.tp18bis.manager.GameManager;
+import com.tactfactory.algotojava.tp18bis.manager.HoldemGameManager;
 import com.tactfactory.algotojava.tp18bis.model.Card;
 import com.tactfactory.algotojava.tp18bis.model.CardValue;
 import com.tactfactory.algotojava.tp18bis.model.Carreau;
+import com.tactfactory.algotojava.tp18bis.model.Coeur;
 import com.tactfactory.algotojava.tp18bis.model.Deck;
 import com.tactfactory.algotojava.tp18bis.model.Pique;
 import com.tactfactory.algotojava.tp18bis.model.Player;
 import com.tactfactory.algotojava.tp18bis.model.Trefle;
+import com.tactfactory.algotojava.tp18bis.model.poker.PokerUtil;
 import com.tactfactory.algotojava.tp18bis.model.poker.holdem.DealerHoldem;
 import com.tactfactory.algotojava.tp18bis.model.poker.holdem.GameHoldem;
+import com.tactfactory.algotojava.tp18bis.model.poker.holdem.PlayerHoldem;
+import com.tactfactory.algotojava.tp18bis.model.poker.holdem.PlayerHoldemHuman;
+import com.tactfactory.algotojava.tp18bis.model.poker.holdem.PlayerHoldemIA;
+import com.tactfactory.algotojava.tp18bis.utils.ListUtil;
 
 /**
  * 
@@ -73,34 +82,31 @@ import com.tactfactory.algotojava.tp18bis.model.poker.holdem.GameHoldem;
 public class TP18 {
 
 	public static void main(String[] args) {
-		Deck pokerDeck = new Deck();
-		pokerDeck.print();
-
-		GameHoldem game = null;
+		Player p1 = new PlayerHoldemHuman(200.00,"Player1");
+		p1.getCards().add(new Card(new CardValue("A ", "_A", 11), new Coeur()));
+		p1.getCards().add(new Card(new CardValue("A ", "_A", 10), new Coeur()));
+		p1.getCards().add(new Card(new CardValue("A ", "_A", 10), new Coeur()));
+		p1.getCards().add(new Card(new CardValue("A ", "_A", 13), new Coeur()));
+		p1.getCards().add(new Card(new CardValue("A ", "_A", 10), new Coeur()));
+		
+		
+		PokerUtil.testBrelan(new ArrayList<Card>(p1.getCards()));
+		
+		List<PlayerHoldem> players = new ArrayList<PlayerHoldem>();
+		players.add(new PlayerHoldemHuman(200.00,"Player1"));
+		players.add(new PlayerHoldemIA(200.00,"Player2"));
+		players.add(new PlayerHoldemIA(200.00,"Player3"));
+		players.add(new PlayerHoldemIA(200.00,"Player4"));
+		
+		GameManager holdem = null;
 		try {
-			game = new GameHoldem(new ArrayList<Player>() {
-				{
-					add(new Player(200.00, "player1"));
-					add(new Player(200.00, "player2"));
-					add(new Player(200.00, "player3"));
-					add(new Player(200.00, "player4"));
-				}
-			}, new DealerHoldem());
-		} catch (Exception e) {
+			holdem = new HoldemGameManager(new GameHoldem(players,new DealerHoldem(),0.5));
+		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
-		
-		game.DealFirstTurnCards();
-		
-		for (Player player : game.getPlayers()) {
-			System.out.println("Card for player " + player.getName());
-			for (Card card : player.getCards()) {
-				card.print();
-			}
-		}
-		
-		System.out.println(game.getDealer().getDeck().getDeck().size());
+
+		holdem.play();
 	}
 
 }

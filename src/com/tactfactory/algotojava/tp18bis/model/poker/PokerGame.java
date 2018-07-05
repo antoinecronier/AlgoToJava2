@@ -1,6 +1,13 @@
 package com.tactfactory.algotojava.tp18bis.model.poker;
 
-public interface PokerGame {
+import com.tactfactory.algotojava.tp18bis.model.Game;
+import com.tactfactory.algotojava.tp18bis.model.Player;
 
-	void DealFirstTurnCards();
+public interface PokerGame extends Game {
+
+	void dealFirstTurnCards();
+	double getPot();
+	Player getNext(Player player);
+	Player getPrevious(Player player);
+	void bet();
 }

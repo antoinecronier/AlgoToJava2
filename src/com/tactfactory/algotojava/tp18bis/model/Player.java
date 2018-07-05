@@ -3,7 +3,9 @@ package com.tactfactory.algotojava.tp18bis.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+import com.tactfactory.algotojava.tp18bis.model.poker.PokerActions;
+
+public abstract class Player {
 	
 	private List<Card> cards;
 	private double money;

@@ -29,15 +29,21 @@ public class DealerHoldem extends Dealer implements HoldemDealer {
 	}
 
 	@Override
-	public void endTurn(List<Player> players) {
-	}
-
-	@Override
 	public void retreiveCard(Card card) {
 	}
 
 	@Override
 	public void renewDeck() {
+	}
+
+	@Override
+	public void burnCard() {
+		this.getDeck().getDeck().remove(((PokerDeck)this.getDeck()).dealACard());
+	}
+
+	@Override
+	public Card giveCard() {
+		return ((PokerDeck)this.getDeck()).dealACard();
 	}
 
 }
