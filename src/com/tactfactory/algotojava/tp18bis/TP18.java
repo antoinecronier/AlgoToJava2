@@ -76,11 +76,20 @@ public class TP18 {
 		Deck pokerDeck = new Deck();
 		pokerDeck.print();
 
-		GameHoldem game = new GameHoldem(new ArrayList<Player>() {
-			{
-				add(new Player(200.00, "player1"));
-			}
-		}, new DealerHoldem());
+		GameHoldem game = null;
+		try {
+			game = new GameHoldem(new ArrayList<Player>() {
+				{
+					add(new Player(200.00, "player1"));
+					add(new Player(200.00, "player2"));
+					add(new Player(200.00, "player3"));
+					add(new Player(200.00, "player4"));
+				}
+			}, new DealerHoldem());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		game.DealFirstTurnCards();
 		
@@ -90,6 +99,8 @@ public class TP18 {
 				card.print();
 			}
 		}
+		
+		System.out.println(game.getDealer().getDeck().getDeck().size());
 	}
 
 }

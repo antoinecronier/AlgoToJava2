@@ -17,10 +17,14 @@ public class GameHoldem implements HoldemGame {
 		return dealer;
 	}
 
-	public GameHoldem(List<Player> players, DealerHoldem dealer) {
+	public GameHoldem(List<Player> players, DealerHoldem dealer) throws Exception {
 		super();
-		this.players = players;
-		this.dealer = dealer;
+		if (players.size() <= 4) {
+			this.players = players;
+			this.dealer = dealer;
+		}else{
+			throw new Exception("Cannot get more than 4 players");
+		}
 	}
 
 	@Override
