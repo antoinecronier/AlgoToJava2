@@ -1,11 +1,16 @@
 package com.tactfactory.algotojava.tp18bis;
 
+import java.util.ArrayList;
+
 import com.tactfactory.algotojava.tp18bis.model.Card;
 import com.tactfactory.algotojava.tp18bis.model.CardValue;
 import com.tactfactory.algotojava.tp18bis.model.Carreau;
 import com.tactfactory.algotojava.tp18bis.model.Deck;
 import com.tactfactory.algotojava.tp18bis.model.Pique;
+import com.tactfactory.algotojava.tp18bis.model.Player;
 import com.tactfactory.algotojava.tp18bis.model.Trefle;
+import com.tactfactory.algotojava.tp18bis.model.poker.holdem.DealerHoldem;
+import com.tactfactory.algotojava.tp18bis.model.poker.holdem.GameHoldem;
 
 /**
  * 
@@ -66,10 +71,25 @@ import com.tactfactory.algotojava.tp18bis.model.Trefle;
  *
  */
 public class TP18 {
-	
+
 	public static void main(String[] args) {
 		Deck pokerDeck = new Deck();
 		pokerDeck.print();
+
+		GameHoldem game = new GameHoldem(new ArrayList<Player>() {
+			{
+				add(new Player(200.00, "player1"));
+			}
+		}, new DealerHoldem());
+		
+		game.DealFirstTurnCards();
+		
+		for (Player player : game.getPlayers()) {
+			System.out.println("Card for player " + player.getName());
+			for (Card card : player.getCards()) {
+				card.print();
+			}
+		}
 	}
-	
+
 }
