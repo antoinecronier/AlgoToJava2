@@ -16,7 +16,7 @@ public class DealerHoldem extends Dealer implements HoldemDealer {
 
 	@Override
 	public void dealCards(Player player) {
-		player.getCards().add(((PokerDeck)this.getDeck()).dealACard());
+		((PlayerHoldem)player).getHand().add(((PokerDeck)this.getDeck()).dealACard());
 	}
 
 	@Override

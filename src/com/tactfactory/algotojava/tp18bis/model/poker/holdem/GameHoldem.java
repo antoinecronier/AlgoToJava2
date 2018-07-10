@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tactfactory.algotojava.tp18bis.model.Card;
+import com.tactfactory.algotojava.tp18bis.model.Family;
 import com.tactfactory.algotojava.tp18bis.model.Human;
 import com.tactfactory.algotojava.tp18bis.model.Player;
 import com.tactfactory.algotojava.tp18bis.model.Printable;
@@ -21,6 +22,7 @@ public class GameHoldem implements HoldemGame, Printable {
 	PlayerHoldem smallBlind;
 	Player currentDealer;
 	PlayerHoldem nextCaller;
+	Player lastRaiser;
 	double pot;
 	double startingBet;
 	private boolean allHavePlayed;
@@ -64,7 +66,7 @@ public class GameHoldem implements HoldemGame, Printable {
 		super();
 		if (players.size() <= 4 && players.size() >= 2) {
 			this.players = players;
-			this.currentPlayers = players;
+			this.currentPlayers = new ArrayList<PlayerHoldem>(players);
 			this.dealer = dealer;
 			this.currentDealer = players.get(0);
 			this.smallBlind = (PlayerHoldem)getNext(this.currentDealer);
@@ -86,8 +88,7 @@ public class GameHoldem implements HoldemGame, Printable {
 
 	@Override
 	public void dealFirstTurnCards() {
-		List<Player> players = new ArrayList<>(this.players);
-		this.currentPlayers = this.players;
+		List<Player> players = new ArrayList<Player>(this.currentPlayers);
 		dealer.dealInitialCards(players);
 	}
 
@@ -114,11 +115,18 @@ public class GameHoldem implements HoldemGame, Printable {
 
 	@Override
 	public void bet() {
-		while (!allPlayersHavePlayed() || !playersBetAreEquals()) {
+		boolean oneHavePlayed = false;
+		lastRaiser = getPrevious(bigBlind);
+		while (!oneHavePlayed || (!playersBetAreEquals() && !allPlayersHavePlayed())) {
+			oneHavePlayed = true;
 			double checkPrice = ((PlayerHoldem) getPrevious(nextCaller)).getCurrentBet();
 			
 			if (nextCaller instanceof Human) {
 				((Human)nextCaller).printDisplay();
+			}
+			
+			if (nextCaller.getMoney() <= 0) {
+				this.players.remove(nextCaller);
 			}
 			
 			if (this.currentPlayers.size() > 1) {
@@ -134,6 +142,7 @@ public class GameHoldem implements HoldemGame, Printable {
 					}
 					break;
 				case RAISE:
+					lastRaiser = nextCaller;
 					double raise;
 					if ((raise = nextCaller.canRaise(checkPrice,this.pot)) > -1) {
 						nextCaller.setMoney(nextCaller.getMoney() - raise);
@@ -164,7 +173,7 @@ public class GameHoldem implements HoldemGame, Printable {
 	}
 
 	private boolean allPlayersHavePlayed() {
-		if (getPrevious(bigBlind).equals(nextCaller)) {
+		if (lastRaiser.equals(nextCaller)) {
 			allHavePlayed = true;
 		}
 		
@@ -218,24 +227,37 @@ public class GameHoldem implements HoldemGame, Printable {
 	}
 	
 	public void endTurn() {
+		checkWinner();
+		this.currentPlayers = new ArrayList<PlayerHoldem>(this.players);
+		for (PlayerHoldem playerHoldem : this.players) {
+			playerHoldem.getTable().clear();
+			playerHoldem.getHand().clear();
+		}
 		this.table.clear();
 		this.pot = 0;
 		this.dealer = new DealerHoldem();
-		checkWinner();
 	}
 
 	private void checkWinner() {
 		PlayerHoldem winner = currentPlayers.get(0);
+		winner.getTable().addAll(getTable());
 		List<PlayerHoldem> winners = new ArrayList<PlayerHoldem>();
+		currentPlayers.remove(winner);
 		for (PlayerHoldem playerHoldem : currentPlayers) {
+			playerHoldem.getTable().addAll(getTable());
 			if (PokerUtil.win(winner,playerHoldem)) {
 				winner = playerHoldem;
 				winners.add(playerHoldem);
 			}
-			
+		}
+		
+		if (winners.size() == 0) {
+			winners.add(winner);
 		}
 		
 		for (PlayerHoldem playerHoldem : winners) {
+			this.print();
+			playerHoldem.print();
 			playerHoldem.setMoney(playerHoldem.getMoney() + (pot/winners.size()));
 		}
 		
@@ -246,8 +268,24 @@ public class GameHoldem implements HoldemGame, Printable {
 
 	@Override
 	public void print() {
-		for (Card card : this.table) {
-			card.print();
+		System.out.println("Cards on table");
+
+		StringBuilder builder = new StringBuilder();
+		List<String> strings = new ArrayList<String>();
+
+		for (int i = 0; i < Family.SIZE_REPRESENTATION; i++) {
+			for (int j = 0; j < this.getTable().size(); j++) {
+				builder.append(this.getTable().get(j).printExpression().get(i) + "  ");
+			}
+			
+			strings.add(builder.toString());
+			builder = new StringBuilder();
 		}
+		
+		for (String string : strings) {
+			builder.append(string+"\n");
+		}
+
+		System.out.println(builder.toString());
 	}
 }

@@ -43,7 +43,7 @@ public class HoldemGameManager extends GameManager {
 		this.currentGame.bet();
 		System.out.println("Quatrième tour de mise");
 		this.currentGame.endTurn();
-
+		System.out.println("Fin du tour");
 	}
 
 }

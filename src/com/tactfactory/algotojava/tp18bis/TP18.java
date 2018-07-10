@@ -82,25 +82,35 @@ import com.tactfactory.algotojava.tp18bis.utils.ListUtil;
 public class TP18 {
 
 	public static void main(String[] args) {
-		Player p1 = new PlayerHoldemHuman(200.00,"Player1");
-		p1.getCards().add(new Card(new CardValue("A ", "_A", 11), new Coeur()));
-		p1.getCards().add(new Card(new CardValue("A ", "_A", 10), new Coeur()));
-		p1.getCards().add(new Card(new CardValue("A ", "_A", 10), new Coeur()));
-		p1.getCards().add(new Card(new CardValue("A ", "_A", 13), new Coeur()));
-		p1.getCards().add(new Card(new CardValue("A ", "_A", 10), new Coeur()));
-		
-		
-		PokerUtil.testBrelan(new ArrayList<Card>(p1.getCards()));
-		
+//		Player p1 = new PlayerHoldemHuman(200.00, "Player1");
+//		Coeur coeur = new Coeur();
+//		p1.getCards().add(new Card(new CardValue("A ", "_A", 11), coeur));
+//		p1.getCards().add(new Card(new CardValue("A ", "_A", 10), coeur));
+//		p1.getCards().add(new Card(new CardValue("A ", "_A", 14), coeur));
+//		p1.getCards().add(new Card(new CardValue("A ", "_A", 13), coeur));
+//		p1.getCards().add(new Card(new CardValue("A ", "_A", 12), coeur));
+//		p1.getCards().add(new Card(new CardValue("A ", "_A", 14), coeur));
+//		p1.getCards().add(new Card(new CardValue("A ", "_A", 14), coeur));
+//
+//		boolean test = false;
+//		test = PokerUtil.testPair(new ArrayList<Card>(p1.getCards()));
+//		test = PokerUtil.testDoublePair(new ArrayList<Card>(p1.getCards()));
+//		test = PokerUtil.testBrelan(new ArrayList<Card>(p1.getCards()));
+//		test = PokerUtil.testQuintes(new ArrayList<Card>(p1.getCards()));
+//		test = PokerUtil.testColor(new ArrayList<Card>(p1.getCards()));
+//		test = PokerUtil.testFull(new ArrayList<Card>(p1.getCards()));
+//		test = PokerUtil.testSquare(new ArrayList<Card>(p1.getCards()));
+//		test = PokerUtil.testQuinteFlush(new ArrayList<Card>(p1.getCards()));
+
 		List<PlayerHoldem> players = new ArrayList<PlayerHoldem>();
-		players.add(new PlayerHoldemHuman(200.00,"Player1"));
-		players.add(new PlayerHoldemIA(200.00,"Player2"));
-		players.add(new PlayerHoldemIA(200.00,"Player3"));
-		players.add(new PlayerHoldemIA(200.00,"Player4"));
-		
+		players.add(new PlayerHoldemIA(200.00, "Player1"));
+		players.add(new PlayerHoldemIA(200.00, "Player2"));
+		players.add(new PlayerHoldemIA(200.00, "Player3"));
+		players.add(new PlayerHoldemIA(200.00, "Player4"));
+
 		GameManager holdem = null;
 		try {
-			holdem = new HoldemGameManager(new GameHoldem(players,new DealerHoldem(),0.5));
+			holdem = new HoldemGameManager(new GameHoldem(players, new DealerHoldem(), 0.5));
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
