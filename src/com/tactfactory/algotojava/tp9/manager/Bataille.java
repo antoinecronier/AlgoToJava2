@@ -71,6 +71,10 @@ public class Bataille {
 				defenseur = joueurs[i];
 				flag = false;
 			}
+			
+			if (i == attaquant) {
+				flag = false;
+			}
 		} while (flag);
 
 		// Retourne le defenseur suivant ou null si la partie est fini
@@ -87,7 +91,7 @@ public class Bataille {
 		int pa = attaquant.getAction();
 		// L'attaquant s'équipe de l'arme.
 		pa--;
-		while (pa - attaquant.getArme().getAction() > 0) {
+		while (pa - attaquant.getArme().getAction() >= 0) {
 			pa -= attaquant.getArme().getAction();
 			if (attaquant.getArme().getDega() - defenseur.getArmure().getArmure() > 0) {
 				defenseur.setVie(
@@ -130,26 +134,26 @@ public class Bataille {
 	public Bataille() {
 		super();
 		
-		// Test avec données de l'énnoncé
-		this.joueurs = new Personnage[3];
-		this.joueurs[0] = new Personnage(9, 7, new Arme(ArmeType.Pelle), new Armure(ArmureType.GiletBleu), "perso1");
-		this.joueurs[1] = new Personnage(4, 12, new Arme(ArmeType.Blaster), new Armure(ArmureType.ArmureDeCuir),
-				"perso2");
-		this.joueurs[2] = new Personnage(15, 8, new Arme(ArmeType.Concasseur), new Armure(ArmureType.ArmureDePlaque),
-				"perso3");
+//		// Test avec données de l'énnoncé
+//		this.joueurs = new Personnage[3];
+//		this.joueurs[0] = new Personnage(9, 7, new Arme(ArmeType.Pelle), new Armure(ArmureType.GiletBleu), "perso1");
+//		this.joueurs[1] = new Personnage(4, 12, new Arme(ArmeType.Blaster), new Armure(ArmureType.ArmureDeCuir),
+//				"perso2");
+//		this.joueurs[2] = new Personnage(15, 8, new Arme(ArmeType.Concasseur), new Armure(ArmureType.ArmureDePlaque),
+//				"perso3");
 
-//		// Action utilisateur pour définir les personnages
-//		int joueurs = 0;
-//		do {
-//			System.out.println("Combien de joueurs?");
-//			joueurs = sc.nextInt();
-//		} while (joueurs < 2);
-//		this.joueurs = new Personnage[joueurs];
-//
-//		
-//		for (int i = 0; i < this.joueurs.length; i++) {
-//			this.joueurs[i] = selectionPerso(i + 1);
-//		}
+		// Action utilisateur pour définir les personnages
+		int joueurs = 0;
+		do {
+			System.out.println("Combien de joueurs?");
+			joueurs = sc.nextInt();
+		} while (joueurs < 2);
+		this.joueurs = new Personnage[joueurs];
+
+		
+		for (int i = 0; i < this.joueurs.length; i++) {
+			this.joueurs[i] = selectionPerso(i + 1);
+		}
 	}
 
 	/**
@@ -170,23 +174,19 @@ public class Bataille {
 		System.out.println(String.format("Nom personnage %d : ", numero));
 		nom = sc.nextLine();
 
-		int vie = 0;
-		do {
-			System.out.println(String.format("Vie personnage %d : ", numero));
-			vie = sc.nextInt();
-		} while (vie <= 0);
+		int vie = selectInt(String.format("Vie personnage %d : ", numero),0);
 
-		int action = 0;
-		do {
-			System.out.println(String.format("Action personnage %d : ", numero));
-			action = sc.nextInt();
-		} while (action <= 0);
-
-		// Parce que l'on a utilisé nextInt(), le caratère de fin de chaine
-		// n'avait pas été récupéré.
-		// Afin de ne pas afficher les informations 2 fois on vide le contenu
-		// restant du scanner avec nextLine();
-		sc.nextLine();
+		int action = selectInt(String.format("Action personnage %d : ", numero),0);
+//		do {
+//			System.out.println(String.format("Action personnage %d : ", numero));
+//			action = sc.nextInt();
+//		} while (action <= 0);
+//
+//		// Parce que l'on a utilisé nextInt(), le caratère de fin de chaine
+//		// n'avait pas été récupéré.
+//		// Afin de ne pas afficher les informations 2 fois on vide le contenu
+//		// restant du scanner avec nextLine();
+//		sc.nextLine();
 
 		String armeSelection = "";
 
@@ -213,6 +213,21 @@ public class Bataille {
 		Armure armure = new Armure(ArmureType.valueOf(armureSelection));
 
 		return new Personnage(vie, action, arme, armure, nom);
+	}
+
+	private int selectInt(String print, int min) {
+		int result = 0;
+		do {
+			System.out.println(print);
+			try {
+				result = Integer.parseInt(sc.nextLine());
+			} catch (Exception e) {
+				System.out.println("Saisir une valeur entière.");
+				result = selectInt(print, min);
+				break;
+			}
+		} while (result <= min);
+		return result;
 	}
 
 	/**

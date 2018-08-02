@@ -37,7 +37,6 @@ public class Arme {
 			this.action = 4;
 			this.dega = 3;
 			break;
-
 		case Pelle:
 			this.action = 1;
 			this.dega = 2;
