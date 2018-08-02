@@ -27,7 +27,8 @@ public class PlayerHoldemIA extends PlayerHoldem {
 		} else if (value > 1) {
 			choice = PokerActions.PASS;
 		} else {
-			choice = PokerActions.LEAVE;
+			//choice = PokerActions.LEAVE;
+			choice = PokerActions.CHECK;
 		}
 
 		return choice;

@@ -71,6 +71,7 @@ public class GameHoldem implements HoldemGame, Printable {
 			this.currentDealer = players.get(0);
 			this.smallBlind = (PlayerHoldem)getNext(this.currentDealer);
 			this.bigBlind = (PlayerHoldem)getNext(this.smallBlind);
+			this.nextCaller = (PlayerHoldem)getNext(this.bigBlind);
 			this.startingBet = startingBet;
 		} else {
 			throw new Exception("Cannot get more than 4 players or less than 2 players");
@@ -115,10 +116,15 @@ public class GameHoldem implements HoldemGame, Printable {
 
 	@Override
 	public void bet() {
-		boolean oneHavePlayed = false;
-		lastRaiser = getPrevious(bigBlind);
-		while (!oneHavePlayed || (!playersBetAreEquals() && !allPlayersHavePlayed())) {
-			oneHavePlayed = true;
+		lastRaiser = bigBlind;
+		boolean firstHavePlayed = false;
+		while (!firstHavePlayed || !allPlayersHavePlayed()) {
+			firstHavePlayed = true;
+			
+			if (firstHavePlayed) {
+				
+			}
+			
 			double checkPrice = ((PlayerHoldem) getPrevious(nextCaller)).getCurrentBet();
 			
 			if (nextCaller instanceof Human) {
@@ -137,7 +143,7 @@ public class GameHoldem implements HoldemGame, Printable {
 					if (nextCaller.canCheck(checkPrice)) {
 						nextCaller.setMoney(nextCaller.getMoney() - checkPrice);
 						this.pot -= nextCaller.getCurrentBet();
-						nextCaller.setCurrentBet(nextCaller.getCurrentBet() + checkPrice);
+						nextCaller.setCurrentBet(checkPrice);
 						this.pot += nextCaller.getCurrentBet();
 					}
 					break;
@@ -147,7 +153,7 @@ public class GameHoldem implements HoldemGame, Printable {
 					if ((raise = nextCaller.canRaise(checkPrice,this.pot)) > -1) {
 						nextCaller.setMoney(nextCaller.getMoney() - raise);
 						this.pot -= nextCaller.getCurrentBet();
-						nextCaller.setCurrentBet(raise);
+						nextCaller.setCurrentBet(raise + nextCaller.getCurrentBet());
 						this.pot += nextCaller.getCurrentBet();
 					}
 					break;
@@ -159,17 +165,23 @@ public class GameHoldem implements HoldemGame, Printable {
 					this.players.remove(nextCaller);
 					break;
 				}
-				
+
+				//print player action
 				System.out.println("Le joueur " + nextCaller.getName() + " choisi de " + choice);
+				System.out.println("Le joueur à engagé " + nextCaller.getCurrentBet() + " sur la table, il lui reste " + nextCaller.getMoney());
 				
 			}else{
 				break;
 			}
-			
-
 			this.nextCaller = (PlayerHoldem) getNext(this.nextCaller);
 		}
-		allHavePlayed = false;
+		endBet();
+	}
+
+	private void endBet() {
+		this.allHavePlayed = false;
+		this.lastRaiser = this.currentDealer;
+		this.nextCaller = (PlayerHoldem) getPrevious(this.nextCaller);
 	}
 
 	private boolean allPlayersHavePlayed() {
@@ -202,11 +214,15 @@ public class GameHoldem implements HoldemGame, Printable {
 			playerHoldem.setCurrentBet(0);
 		}
 		
-		this.bigBlind.setMoney(this.bigBlind.getMoney() - startingBet);
-		this.bigBlind.setCurrentBet(startingBet);
 		this.smallBlind.setMoney(this.smallBlind.getMoney() - (startingBet/2));
 		this.smallBlind.setCurrentBet(startingBet/2);
-		this.nextCaller = (PlayerHoldem) getNext(smallBlind);
+		this.pot += startingBet/2;
+		
+		this.bigBlind.setMoney(this.bigBlind.getMoney() - startingBet);
+		this.bigBlind.setCurrentBet(startingBet);
+		this.pot += startingBet;
+		
+		this.nextCaller = (PlayerHoldem) getNext(bigBlind);
 	}
 
 	public void dealFlopCards() {
@@ -255,6 +271,7 @@ public class GameHoldem implements HoldemGame, Printable {
 			winners.add(winner);
 		}
 		
+		System.out.println("Le pot était de " + pot);
 		for (PlayerHoldem playerHoldem : winners) {
 			this.print();
 			playerHoldem.print();

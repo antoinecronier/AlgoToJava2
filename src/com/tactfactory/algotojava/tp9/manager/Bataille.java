@@ -67,11 +67,11 @@ public class Bataille {
 				i++;
 			}
 
-			if (joueurs[i].getVie() > 0) {
+			if (joueurs[i].getVie() > 0 && i != attaquant) {
 				defenseur = joueurs[i];
 				flag = false;
 			}
-		} while (flag && i != attaquant);
+		} while (flag);
 
 		// Retourne le defenseur suivant ou null si la partie est fini
 		return defenseur;
@@ -129,14 +129,7 @@ public class Bataille {
 	 */
 	public Bataille() {
 		super();
-
-		int joueurs = 0;
-		do {
-			System.out.println("Combien de joueurs?");
-			joueurs = sc.nextInt();
-		} while (joueurs < 2);
-		this.joueurs = new Personnage[joueurs];
-
+		
 		// Test avec données de l'énnoncé
 		this.joueurs = new Personnage[3];
 		this.joueurs[0] = new Personnage(9, 7, new Arme(ArmeType.Pelle), new Armure(ArmureType.GiletBleu), "perso1");
@@ -145,10 +138,18 @@ public class Bataille {
 		this.joueurs[2] = new Personnage(15, 8, new Arme(ArmeType.Concasseur), new Armure(ArmureType.ArmureDePlaque),
 				"perso3");
 
-		// Action utilisateur pour définir les personnages
-		// for (int i = 0; i < this.joueurs.length; i++) {
-		// this.joueurs[i] = selectionPerso(i+1);
-		// }
+//		// Action utilisateur pour définir les personnages
+//		int joueurs = 0;
+//		do {
+//			System.out.println("Combien de joueurs?");
+//			joueurs = sc.nextInt();
+//		} while (joueurs < 2);
+//		this.joueurs = new Personnage[joueurs];
+//
+//		
+//		for (int i = 0; i < this.joueurs.length; i++) {
+//			this.joueurs[i] = selectionPerso(i + 1);
+//		}
 	}
 
 	/**
