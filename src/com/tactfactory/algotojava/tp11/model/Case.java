@@ -1,11 +1,11 @@
 package com.tactfactory.algotojava.tp11.model;
 
-public class Case {
+public class Case implements Cloneable {
 
 	private int x;
 	private int y;
 	private boolean touche;
-	private Navire navire;
+//	private Navire navire;
 	
 	public int getX() {
 		return x;
@@ -30,18 +30,16 @@ public class Case {
 	public void setTouche(boolean touche) {
 		this.touche = touche;
 	}
-
-	public Navire getNavire() {
-		return navire;
-	}
-	
-	public void setNavire(Navire navire) {
-		this.navire = navire;
-		this.navire.getCases().add(this);
-	}
 	
 	public Case(int x, int y){
 		this.x = x;
 		this.y = y;
+	}
+	
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
 	}
 }

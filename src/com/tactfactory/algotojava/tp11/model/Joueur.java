@@ -1,19 +1,21 @@
 package com.tactfactory.algotojava.tp11.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Joueur {
 
 	List<Navire> map;
-	List<Case> tires;
+	Map<Joueur,ArrayList<Case>> tires;
 	String nom;
 
 	public List<Navire> getMap() {
 		return map;
 	}
 
-	public List<Case> getTires() {
+	public Map<Joueur,ArrayList<Case>> getTires() {
 		return tires;
 	}
 
@@ -27,30 +29,12 @@ public class Joueur {
 
 	public Joueur() {
 		map = new ArrayList<Navire>();
-		tires = new ArrayList<Case>();
+		tires = new HashMap<Joueur,ArrayList<Case>>();
 	}
 
-	public Joueur(int option, String nom) {
+	public Joueur(String nom) {
 		this();
 		this.nom = nom;
-		
-		switch (option) {
-		case 1:
-			for (int i = 0; i < 1; i++) {
-				this.map.add(new Corvette());
-			}
-			for (int i = 0; i < 2; i++) {
-				this.map.add(new Destroyer());
-			}
-			for (int i = 0; i < 2; i++) {
-				this.map.add(new Croiseur());
-			}
-			for (int i = 0; i < 1; i++) {
-				this.map.add(new PorteAvion());
-			}
-
-			break;
-		}
 	}
 
 	public boolean getVivant() {

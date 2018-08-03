@@ -169,10 +169,15 @@ public class Bataille {
 		// n'avait pas été récupéré.
 		// Afin de ne pas afficher les informations 2 fois on vide le contenu
 		// restant du scanner avec nextLine();
-		sc.nextLine();
+		if (sc.hasNextLine()) {
+			sc.nextLine();
+		}
 
-		System.out.println(String.format("Nom personnage %d : ", numero));
-		nom = sc.nextLine();
+		do{
+			System.out.println(String.format("Nom personnage %d : ", numero));
+			nom = sc.nextLine();
+		}while(nom.equals(""));
+		
 
 		int vie = selectInt(String.format("Vie personnage %d : ", numero),0);
 
@@ -243,6 +248,7 @@ public class Bataille {
 		for (int i = 0; i < values.length; i++) {
 			if (values[i].name().equals(armeSelection)) {
 				result = false;
+				break;
 			}
 		}
 		return result;

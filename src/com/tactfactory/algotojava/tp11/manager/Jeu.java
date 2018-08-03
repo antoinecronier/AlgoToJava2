@@ -5,54 +5,109 @@ import java.util.List;
 import java.util.Random;
 
 import com.tactfactory.algotojava.tp11.model.Case;
+import com.tactfactory.algotojava.tp11.model.Corvette;
+import com.tactfactory.algotojava.tp11.model.Croiseur;
+import com.tactfactory.algotojava.tp11.model.Destroyer;
 import com.tactfactory.algotojava.tp11.model.Joueur;
 import com.tactfactory.algotojava.tp11.model.Navire;
+import com.tactfactory.algotojava.tp11.model.PorteAvion;
 
 public class Jeu {
-	
-	private static final int TAILLE_X = 24;
-	private static final int TAILLE_Y = 18;
+
+	private int tailleX = 24;
+	private int tailleY = 18;
 
 	Random rand = new Random();
-	
+
 	private List<Joueur> joueurs;
-	
+	private List<Joueur> deads;
+
 	public List<Joueur> getJoueurs() {
 		return joueurs;
 	}
 
-	public Jeu(){
+	public Jeu() {
 		this.joueurs = new ArrayList<Joueur>();
+		this.deads = new ArrayList<Joueur>();
 	}
-	
-	public Jeu(int nbJoueur){
+
+	public Jeu(int nbJoueur) {
 		this();
 		for (int i = 0; i < nbJoueur; i++) {
-			this.joueurs.add(new Joueur(1,"joueur " + (i + 1)));
+			Joueur joueur = new Joueur("joueur " + (i + 1));
+			for (int j = 0; j < 1; j++) {
+				joueur.getMap().add(new Corvette());
+			}
+			for (int j = 0; j < 2; j++) {
+				joueur.getMap().add(new Destroyer());
+			}
+			for (int j = 0; j < 2; j++) {
+				joueur.getMap().add(new Croiseur());
+			}
+			for (int j = 0; j < 1; j++) {
+				joueur.getMap().add(new PorteAvion());
+			}
+			this.joueurs.add(joueur);
 		}
 	}
-	
-	public void play(){
+
+	public Jeu(int nbJoueur, List<Navire> navires) throws CloneNotSupportedException {
+		this();
+		for (int i = 0; i < nbJoueur; i++) {
+			Joueur joueur = new Joueur("joueur " + (i + 1));
+
+			for (Navire navire : navires) {
+				joueur.getMap().add((Navire) navire.clone());
+			}
+
+			this.joueurs.add(joueur);
+		}
+	}
+
+	public Jeu(int nbJoueur, List<Navire> navire, int mapX, int mapY) throws CloneNotSupportedException {
+		this(nbJoueur, navire);
+		this.tailleX = mapX;
+		this.tailleY = mapY;
+	}
+
+	public void play() {
 		for (Joueur joueur : joueurs) {
 			placementBateaux(joueur);
 		}
-		
+
+		afficherPlacement();
+
 		boolean continuer = true;
+		int i = 1;
 		while (continuer) {
+			System.out.println("Tour :" + i);
 			for (Joueur joueur : joueurs) {
-				if (joueur.getVivant()) {
+				if (joueur.getVivant() && !deads.contains(joueur)) {
 					Joueur adversaire = trouveAdversaire(joueur);
+
 					if (adversaire != null) {
-						attaquer(joueur,adversaire);
-					}else{
-						continuer = false;
+						i++;
+						System.out
+								.println("Le joueur " + joueur.getNom() + " attaque le joueur " + adversaire.getNom());
+						attaquer(joueur, adversaire);
+
+						if (!adversaire.getVivant()) {
+							deads.add(adversaire);
+						}
 					}
 				}
 			}
+
+			if (deads.size() >= joueurs.size() - 1) {
+				continuer = false;
+			}
+
 			afficherTour();
 		}
-		
+
 		System.out.println("Fin de partie");
+		this.joueurs.removeAll(deads);
+		System.out.println("Le gagnant est le joueur " + this.joueurs.get(0).getNom());
 	}
 
 	private void afficherTour() {
@@ -61,12 +116,18 @@ public class Jeu {
 		}
 	}
 
+	private void afficherPlacement() {
+		for (Joueur joueur : joueurs) {
+			afficheMap(joueur);
+		}
+	}
+
 	private void attaquer(Joueur joueur, Joueur adversaire) {
-		int x = rand.nextInt(TAILLE_X);
-		int y = rand.nextInt(TAILLE_Y);
+		int x = rand.nextInt(tailleX);
+		int y = rand.nextInt(tailleY);
 		while (!simpleFireTry(joueur, adversaire, x, y)) {
-			x = rand.nextInt(TAILLE_X);
-			y = rand.nextInt(TAILLE_Y);
+			x = rand.nextInt(tailleX);
+			y = rand.nextInt(tailleY);
 		}
 	}
 
@@ -74,7 +135,12 @@ public class Jeu {
 		boolean result = false;
 		Case testCase = new Case(x, y);
 		boolean dejaTire = false;
-		for (Case caseE : joueur.getTires()) {
+
+		if (!joueur.getTires().containsKey(adversaire)) {
+			joueur.getTires().put(adversaire, new ArrayList<Case>());
+		}
+
+		for (Case caseE : joueur.getTires().get(adversaire)) {
 			if (caseE.getX() == x && caseE.getY() == y) {
 				dejaTire = true;
 			}
@@ -88,16 +154,24 @@ public class Jeu {
 					}
 				}
 			}
-			joueur.getTires().add(testCase);
-			result= true;
+			joueur.getTires().get(adversaire).add(testCase);
+			for (Joueur ennemi : joueurs) {
+				if (!ennemi.equals(joueur) && !ennemi.equals(adversaire)) {
+					if (!ennemi.getTires().containsKey(adversaire)) {
+						ennemi.getTires().put(adversaire, new ArrayList<Case>());
+					}
+					ennemi.getTires().get(adversaire).add(testCase);
+				}
+			}
+			result = true;
 		}
 		return result;
 	}
-	
+
 	private Joueur trouveAdversaire(Joueur joueur) {
 		Joueur adversaire = null;
 		boolean flag = true;
-		int i = 0;
+		int i = joueurs.indexOf(joueur);
 		do {
 			// Vérification de l'indice pour ne pas sortir du tableau
 			if (i + 1 == joueurs.size()) {
@@ -110,7 +184,12 @@ public class Jeu {
 				adversaire = joueurs.get(i);
 				flag = false;
 			}
-		} while (flag && adversaire != null && !adversaire.equals(joueur));
+
+			if (adversaire != null && adversaire.equals(joueur)) {
+				adversaire = null;
+				break;
+			}
+		} while (flag && adversaire == null);
 		return adversaire;
 	}
 
@@ -122,12 +201,12 @@ public class Jeu {
 
 	private void placementBateau(Joueur joueur, Navire navire) {
 		Random rand = new Random();
-		int x = rand.nextInt(TAILLE_X);
-		int y = rand.nextInt(TAILLE_Y);
+		int x = rand.nextInt(tailleX);
+		int y = rand.nextInt(tailleY);
 		int direction = rand.nextInt(2);
-		if (bateauPlacable(navire,x,y,direction, joueur)) {
-			placeBateau(navire,x,y,direction);
-		}else{
+		if (bateauPlacable(navire, x, y, direction, joueur)) {
+			placeBateau(navire, x, y, direction);
+		} else {
 			placementBateau(joueur, navire);
 		}
 	}
@@ -137,13 +216,15 @@ public class Jeu {
 		// Droite
 		case 0:
 			for (int i = 0; i < navire.getTaille(); i++) {
-				new Case(x + i, y).setNavire(navire);
+				Case casE = new Case(x + i, y);
+				navire.getCases().add(casE);
 			}
 			break;
 		// Bas
 		case 1:
 			for (int i = 0; i < navire.getTaille(); i++) {
-				new Case(x, y + i).setNavire(navire);
+				Case casE = new Case(x, y + i);
+				navire.getCases().add(casE);
 			}
 			break;
 		}
@@ -155,7 +236,7 @@ public class Jeu {
 		// Droite
 		case 0:
 			for (int i = 0; i < navire.getTaille(); i++) {
-				if (x + i >= TAILLE_X || caseExiste(x + i, y, joueur)) {
+				if (x + i >= tailleX || caseExiste(x + i, y, joueur)) {
 					result = false;
 				}
 			}
@@ -163,7 +244,7 @@ public class Jeu {
 		// Bas
 		case 1:
 			for (int i = 0; i < navire.getTaille(); i++) {
-				if (y + i >= TAILLE_Y || caseExiste(x, y + i, joueur)) {
+				if (y + i >= tailleY || caseExiste(x, y + i, joueur)) {
 					result = false;
 				}
 			}
@@ -184,19 +265,19 @@ public class Jeu {
 
 		return result;
 	}
-	
-	public void afficheMap(Joueur joueur){
+
+	public void afficheMap(Joueur joueur) {
 		boolean dontFindCase = true;
 		StringBuilder column = new StringBuilder();
-		for (int i = 0; i < TAILLE_X; i++) {
+		for (int i = 0; i < tailleX; i++) {
 			StringBuilder line = new StringBuilder();
-			for (int j = 0; j < TAILLE_Y; j++) {
+			for (int j = 0; j < tailleY; j++) {
 				for (Navire navire : joueur.getMap()) {
 					for (Case caseE : navire.getCases()) {
 						if (caseE.getX() == i && caseE.getY() == j) {
 							if (!caseE.isTouche()) {
 								line.append(" " + navire.getIdentifiant());
-							}else{
+							} else {
 								line.append(" X");
 							}
 							dontFindCase = false;
@@ -205,43 +286,93 @@ public class Jeu {
 				}
 				if (dontFindCase) {
 					line.append(" 0");
-				}else{
+				} else {
 					dontFindCase = true;
 				}
 			}
-			column.append(line.toString()+"\n");
+			column.append(line.toString() + "\n");
 		}
 		System.out.println("Carte du joueur " + joueur.getNom());
 		System.out.println(column);
 	}
-	
-
 
 	private void afficheMapTire(Joueur joueur) {
 		boolean dontFindCase = true;
 		StringBuilder column = new StringBuilder();
-		for (int i = 0; i < TAILLE_X; i++) {
+		for (int i = 0; i < tailleX; i++) {
 			StringBuilder line = new StringBuilder();
-			for (int j = 0; j < TAILLE_Y; j++) {
-					for (Case caseE : joueur.getTires()) {
-						if (caseE.getX() == i && caseE.getY() == j) {
-							if (!caseE.isTouche()) {
-								line.append("()");
-							}else{
-								line.append(" X");
+			for (int j = 0; j < tailleY; j++) {
+				for (Joueur ennemi : joueurs) {
+					if (!ennemi.equals(joueur)) {
+						for (Case caseE : ennemi.getTires().get(joueur)) {
+							if (caseE.getX() == i && caseE.getY() == j) {
+								if (!caseE.isTouche()) {
+									line.append("()");
+								} else {
+									line.append(" X");
+								}
+								dontFindCase = false;
 							}
-							dontFindCase = false;
 						}
-				}
-				if (dontFindCase) {
-					line.append(" 0");
-				}else{
-					dontFindCase = true;
+						if (dontFindCase) {
+							line.append(" 0");
+						} else {
+							dontFindCase = true;
+						}
+						break;
+					}
 				}
 			}
-			column.append(line.toString()+"\n");
+			column.append(line.toString() + "\n");
 		}
 		System.out.println("Carte du joueur " + joueur.getNom());
 		System.out.println(column);
 	}
+	// private void afficheMapTire(Joueur joueur) {
+	// boolean dontFindCase = true;
+	// StringBuilder column = new StringBuilder();
+	// for (int i = 0; i < tailleX; i++) {
+	// StringBuilder line = new StringBuilder();
+	// for (int j = 0; j < tailleY; j++) {
+	// for (Joueur ennemi : joueurs) {
+	// if (ennemi.getTires().containsKey(joueur)) {
+	// List<Case> cases = new ArrayList<Case>();
+	// for (Case caseE : ennemi.getTires().get(joueur)) {
+	// boolean haveToAdd = true;
+	// for (Case caseExistante : cases) {
+	// if (caseExistante.getX() == caseE.getX()
+	// && caseExistante.getY() == caseE.getY()) {
+	// haveToAdd = false;
+	// break;
+	// }
+	// }
+	// if (haveToAdd) {
+	// cases.add(caseE);
+	// }
+	// }
+	//
+	// for (Case caseE : cases) {
+	// if (caseE.getX() == i && caseE.getY() == j) {
+	// if (!caseE.isTouche()) {
+	// line.append("()");
+	// } else {
+	// line.append(" X");
+	// }
+	// dontFindCase = false;
+	// }
+	// }
+	// if (dontFindCase) {
+	// line.append(" 0");
+	// } else {
+	// dontFindCase = true;
+	// }
+	// }
+	// }
+	// }
+	// column.append(line.toString() + "\n");
+	// }
+	// System.out.println("Carte du joueur " + joueur.getNom());
+	// System.out.println(column);
+	// }
+
 }

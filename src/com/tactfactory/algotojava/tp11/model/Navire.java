@@ -3,8 +3,7 @@ package com.tactfactory.algotojava.tp11.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Navire {
-
+public abstract class Navire implements Cloneable {
 	private int identifiant;
 	private int taille;
 	private List<Case> cases;
@@ -41,5 +40,12 @@ public abstract class Navire {
 			}
 		}
 		return vivant;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		this.cases = new ArrayList<Case>();
+		return super.clone();
 	}
 }
