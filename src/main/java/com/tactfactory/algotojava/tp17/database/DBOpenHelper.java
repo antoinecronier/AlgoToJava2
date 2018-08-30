@@ -3,7 +3,7 @@ package com.tactfactory.algotojava.tp17.database;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class DBOpenHelper {
 
