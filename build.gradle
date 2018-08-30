@@ -1,13 +1,16 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.10
 version = '1.0'
 
-def classesJava = "${project.buildDir}/classes/main"
+def classesJava = "${project.buildDir}/classes/java/main/"
 def javasRoot = "${rootProject.rootDir}/src/main/java"
-def testClassesJava = "${project.buildDir}/classes/test"
+def testClassesJava = "${project.buildDir}/classes/java/test"
 def testJavaRoot = "${rootProject.rootDir}/src/test/java"
+
+def javaRootFB = "${javasRoot}/com/tactfactory/algotojava"
+def classesJavaFB = "${classesJava}/com/tactfactory/algotojava"
 
 jar {
     manifest {
@@ -45,6 +48,15 @@ uploadArchives {
        }
     }
 }
+
+/*sourceSets {
+  main {
+    //if you truly want to override the defaults:
+    output.resourcesDir = file('build')
+    // Compiled Java classes should use this directory
+    java.outputDir = file(classesJava)
+  }
+}*/
 
 apply plugin: 'jacoco'
 
@@ -143,71 +155,6 @@ gradle.taskGraph.afterTask {Task task, TaskState state ->
             }
             checkstyleReport.execute()
         }
-    }
-}
-
-
-/**
- * FindBugs task
- * Usage:
- * - place this file under root dir of your project at /gradle  directory
- * - apply script from your gradle file:
- * apply from : "{rootDir}/gradle/findbugs.gradle"
- *
- * To configure findbugs exclude filter use configs at:
- * "{rootDir}/config/findbugs/exclude.xml"
- *
- * Xml and HTML reports are stored:
- * "{project.buildDir}/reports/findbugs/"
- * HTML styling is done by XSLT stylesheet:
- * "{rootDir}/config/findbugs/findbugs-default.xsl"
- */
-
-
-apply plugin: 'findbugs'
-
-task checkFindBugsReport << {
-   def xmlReport = findbugsMain.reports.xml
-   def slurped = new XmlSlurper().parse(xmlReport.destination)
-   def bugsFound = slurped.BugInstance.size()
-   if (bugsFound > 0) {
-      throw new GradleException("$bugsFound FindBugs rule violations were found. See the report at: $xmlReport.destination")
-   }
-}
-
-findbugsMain.finalizedBy checkFindBugsReport
-
-task findbugsMain (type: FindBugs, overwrite: true) {
-	ignoreFailures = true
-    description 'Run findbugs'
-    classes = fileTree(classesJava)
-    source = fileTree(javasRoot)
-    classpath = files(classesJava)
-
-    effort = 'max'
-
-    excludeFilter = file("findbugsExclude.xml")
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
-}
-
-task findbugsTest (type: FindBugs, overwrite: true) {
-	ignoreFailures = true
-    description 'Run findbugs'
-    classes = fileTree(classesJava)
-    source = fileTree(javasRoot)
-    classpath = files(classesJava)
-
-    effort = 'max'
-
-    excludeFilter = file("findbugsExclude.xml")
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
     }
 }
 
