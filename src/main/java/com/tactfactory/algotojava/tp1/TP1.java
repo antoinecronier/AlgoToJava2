@@ -24,7 +24,8 @@ public class TP1 {
 		Scanner scanner = new Scanner(System.in);
 		
 		// Série de nombre a trouver
-		int[] cadena = {12,9,14,8};
+		//int[] cadena = {12,9,14,8};
+		int[] cadena = {2,1,2,1};
 		
 		// Boucle pour sélectionner le numéro courant a chercher
 		int loop = 0;
@@ -72,6 +73,7 @@ public class TP1 {
 						// Le nombre de l'utilisateur repart à 0
 						userRealNumber = 0;
 					}
+
 					// On incrémente le nombre de l'utilisateur
 					userRealNumber++;
 					break;

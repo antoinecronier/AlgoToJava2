@@ -44,7 +44,6 @@ public abstract class Navire implements Cloneable {
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
 		this.cases = new ArrayList<Case>();
 		return super.clone();
 	}

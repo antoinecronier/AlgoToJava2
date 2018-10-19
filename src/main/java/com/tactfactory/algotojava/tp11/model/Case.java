@@ -5,9 +5,8 @@ public class Case implements Cloneable {
 	private int x;
 	private int y;
 	private boolean touche;
-//	private Navire navire;
 	
-	public int getX() {
+	public Integer getX() {
 		return x;
 	}
 	
@@ -39,7 +38,6 @@ public class Case implements Cloneable {
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
 		return super.clone();
 	}
 }

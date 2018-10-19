@@ -1,5 +1,6 @@
 package com.tactfactory.algotojava.tp6;
 
+import java.math.BigDecimal;
 import java.util.Random;
 import java.util.Scanner;
 

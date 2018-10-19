@@ -42,7 +42,7 @@ public class TP4 {
 			if (nb2 == 0) {
 				System.out.println("Division par 0");
 			} else {
-				System.out.println("Division nb1 et nb2 = " + nb1 / nb2);
+				System.out.println("Division nb1 et nb2 = " + nb1 / (double)nb2);
 			}
 		}
 		
