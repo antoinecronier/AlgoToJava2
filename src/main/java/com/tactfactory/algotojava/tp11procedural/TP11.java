@@ -2,287 +2,330 @@ package com.tactfactory.algotojava.tp11procedural;
 
 import java.util.Random;
 
-import com.tactfactory.algotojava.tp11.model.Joueur;
-
 /**
  * Créer une bataille navale où les bateaux sont générer aléatoirement sur une
  * carte pour chacun des joueurs et ou le programme jouera tout seul le jeux.
- * 
+ *
  * @author tactfactory
  *
  */
 public class TP11 {
 
-	/**
-	 * Gestion des couleurs
-	 */
-	public static final String ANSI_RESET = "\u001B[0m";
-	public static final String ANSI_BLACK = "\u001B[30m";
-	public static final String ANSI_RED = "\u001B[31m";
-	public static final String ANSI_GREEN = "\u001B[32m";
-	public static final String ANSI_YELLOW = "\u001B[33m";
-	public static final String ANSI_BLUE = "\u001B[34m";
-	public static final String ANSI_PURPLE = "\u001B[35m";
-	public static final String ANSI_CYAN = "\u001B[36m";
-	public static final String ANSI_WHITE = "\u001B[37m";
+  /**
+   * Gestion des couleurs
+   */
+  public static final String ANSI_RESET = "\u001B[0m";
+  public static final String ANSI_BLACK = "\u001B[30m";
+  public static final String ANSI_RED = "\u001B[31m";
+  public static final String ANSI_GREEN = "\u001B[32m";
+  public static final String ANSI_YELLOW = "\u001B[33m";
+  public static final String ANSI_BLUE = "\u001B[34m";
+  public static final String ANSI_PURPLE = "\u001B[35m";
+  public static final String ANSI_CYAN = "\u001B[36m";
+  public static final String ANSI_WHITE = "\u001B[37m";
 
-	/**
-	 * Représente les informations des bateaux. identifiant | taille | nombre
-	 * par joueur.
-	 */
-	private final static int[][] NAVIRES = new int[][] { 
-		{ 1, 1, 1 }, 
-		{ 2, 3, 2 }, 
-		{ 3, 4, 2 }, 
-		{ 4, 6, 1 } 
-		};
+  /**
+   * Représente les informations des bateaux. identifiant | taille | nombre
+   * par joueur.
+   */
+  private final static int[][] NAVIRES = new int[][] {
+    { 1, 1, 1 },
+    { 2, 3, 2 },
+    { 3, 4, 2 },
+    { 4, 6, 1 }
+    };
 
-	private final static int IDENTIFIANT = 0;
-	private final static int TAILLE = 1;
-	private final static int NOMBRE = 2;
-	private final static int MAP_X = 18;
-	private final static int MAP_Y = 24;
+  private final static int IDENTIFIANT = 0;
+  private final static int TAILLE = 1;
+  private final static int NOMBRE = 2;
+  private final static int MAP_X = 18;
+  private final static int MAP_Y = 24;
 
-	/**
-	 * Cartes utilisé par l'ensemble des joueurs.
-	 */
-	private static int[][][] maps;
+  private final static int JOUEURS = 2;
 
-	/**
-	 * Création d'un objet pour faire de l'aléatoire.
-	 */
-	private static Random rand = new Random();
+  /**
+   * Cartes utilisé par l'ensemble des joueurs.
+   */
+  private static int[][][] maps;
 
-	/**
-	 * Contient le nom du joueur gagnant.
-	 */
-	private static String gagnant;
+  /**
+   * Création d'un objet pour faire de l'aléatoire.
+   */
+  private static Random rand = new Random();
 
-	public static void main(String[] args) {
-		// Initialisation du tableau des joueurs/
-		if (args.length == 0) {
-			// Mode 2 joueur.
-			maps = new int[2][MAP_X][MAP_Y];
-		} else {
-			// Mode multi joueur.
-			maps = new int[Integer.parseInt(args[0])][MAP_X][MAP_Y];
-		}
+  /**
+   * Contient le nom du joueur gagnant.
+   */
+  private static String gagnant;
 
-		// Création des variable utilisé dans la fonction.
-		boolean fini = false;
-		int cible = 0;
+  public static void main(String[] args) {
+    // Initialisation du tableau des joueurs/
+    if (args.length == 0) {
+      // Mode 2 joueur.
+      maps = new int[JOUEURS][MAP_X][MAP_Y];
+    } else {
+      // Mode multi joueur.
+      maps = new int[Integer.parseInt(args[0])][MAP_X][MAP_Y];
+    }
 
-		placeToutBateau();
+    // Création des variable utilisé dans la fonction.
+    boolean fini = false;
+    int cible = 0;
 
-		// Boucle tant que le jeu n'est pas fini.
-		while (!fini) {
-			// Pour chaque joueur.
-			for (int i = 0; !fini && i < maps.length; i++) {
-				cible = trouveCible(i);
+    placeToutBateau();
 
-				// Si une cible est trouvé.
-				if (cible != -1) {
-					tire(cible);
+    // Boucle tant que le jeu n'est pas fini.
+    while (!fini) {
+      // Pour chaque joueur.
+      for (int i = 0; !fini && i < maps.length; i++) {
+        cible = trouveCible(i);
 
-					afficheCartePlacement(i);
-					System.out.println();
-				} else {
-					// Le jeu est fini.
-					fini = true;
-				}
-			}
-		}
+        // Si une cible est trouvé.
+        if (cible != -1) {
+          tire(cible);
 
-		// Je cherche le seul joueur encore en vie.
-		for (int i = 0; i < maps.length; i++) {
-			if (estVivant(i)) {
-				gagnant = "joueur " + (i + 1);
-			}
-			afficheCartePlacement(i);
-			System.out.println();
-		}
+          afficheCartePlacement(i);
+          System.out.println();
+        } else {
+          // Le jeu est fini.
+          fini = true;
+        }
+      }
+    }
 
-		System.out.println("Le gagant est : " + gagnant);
-	}
+    // Je cherche le seul joueur encore en vie.
+    for (int i = 0; i < maps.length; i++) {
+      if (estVivant(i)) {
+        gagnant = "joueur " + (i + 1);
+      }
+      afficheCartePlacement(i);
+      System.out.println();
+    }
 
-	public static boolean estVivant(int joueur) {
-		boolean result = false;
+    System.out.println("Le gagant est : " + gagnant);
+  }
 
-		for (int i = 0; i < maps[joueur].length; i++) {
-			for (int j = 0; j < maps[joueur][i].length; j++) {
-				if (maps[joueur][i][j] != 0 && maps[joueur][i][j] != 8 && maps[joueur][i][j] != 9) {
-					result = true;
-				}
-			}
-		}
+  /**
+   * Indique si le joueur à l'indice joueur est encore considéré comme vivant.
+   * @param joueur indice du joueur dans le tableau de jeu.
+   * @return
+   */
+  public static boolean estVivant(int joueur) {
+    boolean result = false;
 
-		return result;
-	}
+    for (int i = 0; i < maps[joueur].length; i++) {
+      for (int j = 0; j < maps[joueur][i].length; j++) {
+        if (maps[joueur][i][j] != 0 && maps[joueur][i][j] != 8 && maps[joueur][i][j] != 9) {
+          result = true;
+        }
+      }
+    }
 
-	public static void placeToutBateau() {
-		// Pour chaque joueur.
-		for (int i = 0; i < maps.length; i++) {
-			// Pour chaque navire.
-			for (int[] navire : NAVIRES) {
-				for (int j = 0; j < navire[NOMBRE]; j++) {
-					placeBateau(i, navire);
-				}
-			}
+    return result;
+  }
 
-			// Affiche la carte avec les bateaux placé pour le joueur courant.
-			afficheCartePlacement(i);
-			System.out.println();
-		}
+  /**
+   * Place tous les bateaux pour tous les joueurs.
+   */
+  public static void placeToutBateau() {
+    // Pour chaque joueur.
+    for (int i = 0; i < maps.length; i++) {
+      // Pour chaque navire.
+      for (int[] navire : NAVIRES) {
+        for (int j = 0; j < navire[NOMBRE]; j++) {
+          placeBateau(i, navire);
+        }
+      }
 
-		System.out.println("Début du combat");
-	}
+      // Affiche la carte avec les bateaux placé pour le joueur courant.
+      afficheCartePlacement(i);
+      System.out.println();
+    }
 
-	public static void placeBateau(int joueur, int[] navire) {
-		// Création d'un objet pour faire de l'aléatoire.
-		Random rand = new Random();
+    System.out.println("Début du combat");
+  }
 
-		// Tirage aléatoire de x et y;
-		int x = rand.nextInt(MAP_X) % MAP_X;
-		int y = rand.nextInt(MAP_Y) % MAP_Y;
-		int direction = rand.nextInt(2) % 2;
+  /**
+   * Place un bateau pour un joueur.
+   * @param joueur l'indice du joueur dans le tableau.
+   * @param navire le tableau représentant le type de bateau à placer.
+   */
+  public static void placeBateau(int joueur, int[] navire) {
+    // Création d'un objet pour faire de l'aléatoire.
+    Random rand = new Random();
 
-		// Bateau placable aux coordonnées.
-		if (estPlacable(joueur, navire, x, y, direction)) {
-			placeBateauDansCarte(joueur, navire, x, y, direction);
-		} else {
-			placeBateau(joueur, navire);
-		}
-	}
+    // Tirage aléatoire de x et y;
+    int x = rand.nextInt(MAP_X) % MAP_X;
+    int y = rand.nextInt(MAP_Y) % MAP_Y;
+    int direction = rand.nextInt(2) % 2;
 
-	public static boolean estPlacable(int joueur, int[] navire, int x, int y, int direction) {
-		boolean result = true;
+    // Bateau placable aux coordonnées.
+    if (estPlacable(joueur, navire, x, y, direction)) {
+      placeBateauDansCarte(joueur, navire, x, y, direction);
+    } else {
+      placeBateau(joueur, navire);
+    }
+  }
 
-		switch (direction) {
-		case 0:
-			// Verticale.
-			for (int i = 0; i < navire[TAILLE]; i++) {
-				// Si hors de la carte.
-				if (x + i >= MAP_X) {
-					result = false;
-				} else
-				// Si la case contient déjà un bateau.
-				if (maps[joueur][x + i][y] != 0) {
-					result = false;
-				}
-			}
-			break;
+  /**
+   * Indique si un bateau peut être placé aux coordonnées x, y dans une direction donnée, pour un joueur donné
+   * @param joueur l'indice du joueur dans le tableau
+   * @param navire le tableau représentant le type de navire
+   * @param x coordonnée X
+   * @param y coordonnée Y
+   * @param direction verticale ou horizontale
+   * @return
+   */
+  public static boolean estPlacable(int joueur, int[] navire, int x, int y, int direction) {
+    boolean result = true;
 
-		case 1:
-			// Horizontale.
-			for (int i = 0; i < navire[TAILLE]; i++) {
-				// Si hors de la carte.
-				if (y + i >= MAP_Y) {
-					result = false;
-				} else
-				// Si la case contient déjà un bateau.
-				if (maps[joueur][x][y + i] != 0) {
-					result = false;
-				}
-			}
-			break;
-		}
+    switch (direction) {
+    case 0:
+      // Verticale.
+      for (int i = 0; i < navire[TAILLE]; i++) {
+        // Si hors de la carte.
+        if (x + i >= MAP_X) {
+          result = false;
+        } else
+        // Si la case contient déjà un bateau.
+        if (maps[joueur][x + i][y] != 0) {
+          result = false;
+        }
+      }
+      break;
 
-		return result;
-	}
+    case 1:
+      // Horizontale.
+      for (int i = 0; i < navire[TAILLE]; i++) {
+        // Si hors de la carte.
+        if (y + i >= MAP_Y) {
+          result = false;
+        } else
+        // Si la case contient déjà un bateau.
+        if (maps[joueur][x][y + i] != 0) {
+          result = false;
+        }
+      }
+      break;
+    }
 
-	public static void placeBateauDansCarte(int joueur, int[] navire, int x, int y, int direction) {
-		switch (direction) {
-		case 0:
-			// Verticale.
-			for (int i = 0; i < navire[TAILLE]; i++) {
-				maps[joueur][x + i][y] = navire[IDENTIFIANT];
-			}
-			break;
+    return result;
+  }
 
-		case 1:
-			// Horizontale.
-			for (int i = 0; i < navire[TAILLE]; i++) {
-				maps[joueur][x][y + i] = navire[IDENTIFIANT];
-			}
-			break;
-		}
-	}
+  /**
+   * Place réellement le bateau sur la carte du joueur.
+   * @param joueur l'indice du joueur dans le tableau
+   * @param navire le tableau représentant le type de navire
+   * @param x coordonnée X
+   * @param y coordonnée Y
+   * @param direction verticale ou horizontale
+   */
+  public static void placeBateauDansCarte(int joueur, int[] navire, int x, int y, int direction) {
+    switch (direction) {
+    case 0:
+      // Verticale.
+      for (int i = 0; i < navire[TAILLE]; i++) {
+        maps[joueur][x + i][y] = navire[IDENTIFIANT];
+      }
+      break;
 
-	public static void afficheCartePlacement(int joueur) {
-		for (int i = 0; i < maps[joueur].length; i++) {
-			for (int j = 0; j < maps[joueur][i].length; j++) {
-				StringBuilder result = new StringBuilder();
-				switch (maps[joueur][i][j]) {
-				case 8:
-					result.append(ANSI_YELLOW);
-					break;
-				case 9:
-					result.append(ANSI_RED);
-					break;
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-					result.append(ANSI_PURPLE);
-					break;
-				default:
-					result.append(ANSI_BLUE);
-					break;
-				}
-				result.append(maps[joueur][i][j]);
-				result.append(" ");
-				result.append(ANSI_RESET);
-				System.out.print(result.toString());
-			}
-			System.out.println();
-		}
-	}
+    case 1:
+      // Horizontale.
+      for (int i = 0; i < navire[TAILLE]; i++) {
+        maps[joueur][x][y + i] = navire[IDENTIFIANT];
+      }
+      break;
+    }
+  }
 
-	public static void afficheCarteJeu(int joueur) {
+  /**
+   * Affiche la carte d'un joueur.
+   * @param joueur l'indice du joueur dans le tableau.
+   */
+  public static void afficheCartePlacement(int joueur) {
+    for (int i = 0; i < maps[joueur].length; i++) {
+      for (int j = 0; j < maps[joueur][i].length; j++) {
+        StringBuilder result = new StringBuilder();
+        switch (maps[joueur][i][j]) {
+        case 8:
+          result.append(ANSI_YELLOW);
+          break;
+        case 9:
+          result.append(ANSI_RED);
+          break;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+          result.append(ANSI_PURPLE);
+          break;
+        default:
+          result.append(ANSI_BLUE);
+          break;
+        }
+        result.append(maps[joueur][i][j]);
+        result.append(" ");
+        result.append(ANSI_RESET);
+        System.out.print(result.toString());
+      }
+      System.out.println();
+    }
+  }
 
-	}
+  public static void afficheCarteJeu(int joueur) {
 
-	private static int trouveCible(int attaquant) {
-		int adversaire = -1;
-		boolean flag = true;
-		int i = attaquant;
+  }
 
-		do {
-			// Vérification de l'indice pour ne pas sortir du tableau
-			if (i + 1 == maps.length) {
-				i = 0;
-			} else {
-				i++;
-			}
+  /**
+   * Trouve la prochaine cible en vie.
+   * @param attaquant l'indice de l'attaquant.
+   * @return l'adversaire suivant.
+   */
+  public static int trouveCible(int attaquant) {
+    int adversaire = -1;
+    boolean flag = true;
+    int i = attaquant;
 
-			if (estVivant(i)) {
-				adversaire = i;
-				flag = false;
-			}
-		} while (flag && i != attaquant);
+    do {
+      // Vérification de l'indice pour ne pas sortir du tableau
+      if (i + 1 == maps.length) {
+        i = 0;
+      } else {
+        i++;
+      }
 
-		if (i == attaquant) {
-			adversaire = -1;
-		}
+      if (estVivant(i)) {
+        adversaire = i;
+        flag = false;
+      }
+    } while (flag && i != attaquant);
 
-		return adversaire;
-	}
+    if (i == attaquant) {
+      adversaire = -1;
+    }
 
-	public static void tire(int joueurCible) {
-		// Tirage aléatoire de x et y;
-		int x = -1;
-		int y = -1;
+    return adversaire;
+  }
 
-		do {
-			x = rand.nextInt(MAP_X) % MAP_X;
-			y = rand.nextInt(MAP_Y) % MAP_Y;
+  /**
+   * Tire sur le joueur ciblé
+   * @param joueurCible indice du joueur ciblé
+   */
+  public static void tire(int joueurCible) {
+    // Tirage aléatoire de x et y;
+    int x = -1;
+    int y = -1;
 
-			if (maps[joueurCible][x][y] == 0) {
-				maps[joueurCible][x][y] = 8;
-			} else if (maps[joueurCible][x][y] == 1 || maps[joueurCible][x][y] == 2 || maps[joueurCible][x][y] == 3
-					|| maps[joueurCible][x][y] == 4) {
-				maps[joueurCible][x][y] = 9;
-			}
-		} while (maps[joueurCible][x][y] != 8 && maps[joueurCible][x][y] != 9);
-	}
+    do {
+      x = rand.nextInt(MAP_X) % MAP_X;
+      y = rand.nextInt(MAP_Y) % MAP_Y;
+
+      if (maps[joueurCible][x][y] == 0) {
+        maps[joueurCible][x][y] = 8;
+      } else if (maps[joueurCible][x][y] == 1 || maps[joueurCible][x][y] == 2 || maps[joueurCible][x][y] == 3
+          || maps[joueurCible][x][y] == 4) {
+        maps[joueurCible][x][y] = 9;
+      }
+    } while (maps[joueurCible][x][y] != 8 && maps[joueurCible][x][y] != 9);
+  }
 }

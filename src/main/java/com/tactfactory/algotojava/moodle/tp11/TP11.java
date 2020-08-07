@@ -1,6 +1,6 @@
-package com.tactfactory.algotojava.tp12;
+package com.tactfactory.algotojava.moodle.tp11;
 
-import com.tactfactory.algotojava.tp12.utils.Conjugateur;
+import com.tactfactory.algotojava.moodle.tp11.utils.Conjugateur;
 
 /**
  *
@@ -13,7 +13,7 @@ import com.tactfactory.algotojava.tp12.utils.Conjugateur;
  *  - Le programme doit afficher le verbe de l'utilisateur conjugué pour tout les pronoms
  *
  */
-public class TP12 {
+public class TP11 {
 
   public static void main(String[] args){
     Conjugateur.autoConjugue(new String[]{

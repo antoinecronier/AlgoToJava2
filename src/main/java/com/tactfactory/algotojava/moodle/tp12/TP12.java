@@ -1,6 +1,6 @@
-package com.tactfactory.algotojava.tp13;
+package com.tactfactory.algotojava.moodle.tp12;
 
-import com.tactfactory.algotojava.tp13.utils.StringUtil;
+import com.tactfactory.algotojava.moodle.tp12.utils.StringUtil;
 
 /**
  *
@@ -18,7 +18,7 @@ import com.tactfactory.algotojava.tp13.utils.StringUtil;
  *  - Le terme de remplacement et la chaîne initiale est à votre convenance
  *
  */
-public class TP13 {
+public class TP12 {
 
   public static void main(String[] args){
     String chaine = "ma chaine et mon chaine Et la chaine ET cette chaine et ma derniere chaine";

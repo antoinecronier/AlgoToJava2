@@ -1,9 +1,9 @@
-package com.tactfactory.algotojava.tp11;
+package com.tactfactory.algotojava.moodle.tp14;
 
-import com.tactfactory.algotojava.tp11.manager.Jeu;
-import com.tactfactory.algotojava.tp11.model.Joueur;
+import com.tactfactory.algotojava.moodle.tp14.manager.Jeu;
+import com.tactfactory.algotojava.moodle.tp14.model.Joueur;
 
-public class TP11 {
+public class TP14 {
 
   public static void main(String[] args) throws CloneNotSupportedException {
     Jeu jeu = new Jeu(2,7,10);
