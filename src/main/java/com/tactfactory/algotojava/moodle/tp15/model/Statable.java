@@ -1,5 +1,5 @@
 package com.tactfactory.algotojava.moodle.tp15.model;
 
-public class Animaux {
-
+public interface Statable {
+  public String getStats();
 }

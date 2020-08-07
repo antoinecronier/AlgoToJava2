@@ -1,5 +1,6 @@
 package com.tactfactory.algotojava.moodle.tp15.model;
 
-public class Cage {
+public interface Butin {
 
+  String getName();
 }
